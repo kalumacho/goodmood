@@ -161,7 +161,7 @@ export default function AdminView({
             <div className="text-center py-12 text-white/20 text-sm font-bold uppercase tracking-widest">Aucun message pour le moment.</div>
           )}
           {messages.map((msg) => (
-            <Card key={msg.id} variant={!msg.is_read ? "orange" : "default"}>
+            <Card key={msg.id} variant={!msg.is_read ? "coral" : "default"}>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-start gap-3">
                   <div className="w-9 h-9 rounded bg-orange/10 flex items-center justify-center shrink-0 border border-orange/20">

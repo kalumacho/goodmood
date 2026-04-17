@@ -9,84 +9,115 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Naruto palette
-        void: "#050508",        // fond noir absolu
-        shadow: "#0D0D14",      // fond cards
-        "shadow-light": "#13131F",
-        "shadow-mid": "#1A1A2E",
-        orange: {
-          DEFAULT: "#FF6B00",   // orange Naruto
-          light: "#FF8C3A",
-          dark: "#CC5500",
-          glow: "#FF6B0033",
+        // GoodMood Shonen palette — white base, coral accent, navy contrast
+        coral: {
+          DEFAULT: "#E8724A",
+          light: "#F08060",
+          dark: "#C85A35",
+          50: "#FEF3EF",
+          100: "#FDE0D4",
         },
-        red: {
-          DEFAULT: "#CC0000",   // rouge sang
-          light: "#FF2222",
-          dark: "#990000",
+        navy: {
+          DEFAULT: "#0D1B2A",
+          50: "#F0F3F6",
+          100: "#D6DEE7",
+          200: "#A8BBCC",
         },
-        chakra: {
-          DEFAULT: "#FFD700",   // jaune chakra
-          light: "#FFE840",
-          dark: "#CCB000",
+        sage: {
+          DEFAULT: "#8BAF8B",
+          dark: "#5C8A5C",
+          light: "#B8D4B8",
         },
-        blue: {
-          DEFAULT: "#0066FF",   // bleu Sasuke
-          light: "#3388FF",
-          dark: "#0044CC",
-        },
-        white: "#F0F0F0",
-        "white-dim": "#A0A0B0",
-        // compatibility aliases
-        navy: "#050508",
-        coral: "#FF6B00",
-        sage: "#FFD700",
-        cream: "#0D0D14",
+        ink: "#1A1A2A",          // trait de manga
+        cream: "#F8F8F8",         // fond blanc chaud
+        paper: "#FFFDF9",         // fond page manga
+        panel: "#F2F0EC",         // fond case manga
+        impact: "#E8724A",        // couleur impact text
       },
       fontFamily: {
         sans: ["var(--font-dm-sans)", "DM Sans", "Inter", "sans-serif"],
-        ninja: ["var(--font-dm-sans)", "sans-serif"],
       },
       borderRadius: {
-        card: "4px",            // angulaire style manga
-        badge: "2px",
+        card: "12px",
+        badge: "6px",
+        panel: "4px",
       },
       boxShadow: {
-        card: "0 0 0 1px rgba(255,107,0,0.15), 0 4px 24px rgba(0,0,0,0.6)",
-        "card-hover": "0 0 20px rgba(255,107,0,0.3), 0 0 0 1px rgba(255,107,0,0.4)",
-        orange: "0 0 30px rgba(255,107,0,0.5)",
-        chakra: "0 0 20px rgba(255,215,0,0.4)",
-        red: "0 0 20px rgba(204,0,0,0.5)",
+        card: "0 2px 16px rgba(13,27,42,0.08), 0 0 0 1px rgba(13,27,42,0.06)",
+        "card-hover": "0 8px 32px rgba(232,114,74,0.2), 0 0 0 2px rgba(232,114,74,0.3)",
+        coral: "0 4px 24px rgba(232,114,74,0.35)",
+        "coral-sm": "0 2px 12px rgba(232,114,74,0.25)",
+        ink: "4px 4px 0px #0D1B2A",
+        "ink-sm": "2px 2px 0px #0D1B2A",
+        panel: "0 2px 8px rgba(13,27,42,0.1), inset 0 0 0 2px rgba(13,27,42,0.08)",
       },
       backgroundImage: {
-        "hero-pattern": "radial-gradient(ellipse at 20% 50%, rgba(255,107,0,0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(204,0,0,0.1) 0%, transparent 50%), linear-gradient(180deg, #050508 0%, #0D0D14 100%)",
-        "chakra-gradient": "linear-gradient(135deg, #FF6B00, #CC0000)",
-        "card-gradient": "linear-gradient(135deg, #13131F, #0D0D14)",
-        "orange-gradient": "linear-gradient(135deg, #FF6B00, #CC5500)",
+        "speed-lines": "repeating-conic-gradient(from 0deg at 50% 120%, transparent 0deg, transparent 5deg, rgba(232,114,74,0.03) 5deg, rgba(232,114,74,0.03) 6deg)",
+        "hero-paper": "radial-gradient(ellipse at 30% 0%, rgba(232,114,74,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(139,175,139,0.08) 0%, transparent 40%)",
+        "panel-stripe": "repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(13,27,42,0.02) 4px, rgba(13,27,42,0.02) 8px)",
+        "coral-gradient": "linear-gradient(135deg, #E8724A, #C85A35)",
+        "navy-gradient": "linear-gradient(135deg, #0D1B2A, #1E3A5F)",
       },
       keyframes: {
-        flicker: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" },
+        "slide-up": {
+          from: { opacity: "0", transform: "translateY(16px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
-        pulse_orange: {
-          "0%, 100%": { boxShadow: "0 0 10px rgba(255,107,0,0.3)" },
-          "50%": { boxShadow: "0 0 30px rgba(255,107,0,0.8)" },
+        "bounce-in": {
+          "0%": { opacity: "0", transform: "scale(0.8) translateY(8px)" },
+          "60%": { transform: "scale(1.05) translateY(-4px)" },
+          "100%": { opacity: "1", transform: "scale(1) translateY(0)" },
         },
-        slide_up: {
-          "from": { opacity: "0", transform: "translateY(20px)" },
-          "to": { opacity: "1", transform: "translateY(0)" },
+        "fist-pump": {
+          "0%": { transform: "translateY(0) rotate(0deg)" },
+          "30%": { transform: "translateY(-12px) rotate(-10deg)" },
+          "60%": { transform: "translateY(-4px) rotate(5deg)" },
+          "100%": { transform: "translateY(0) rotate(0deg)" },
         },
-        charge: {
-          "0%": { width: "0%" },
-          "100%": { width: "100%" },
+        "shake": {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "25%": { transform: "rotate(-8deg)" },
+          "75%": { transform: "rotate(8deg)" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "impact-pop": {
+          "0%": { transform: "scale(0) rotate(-12deg)", opacity: "0" },
+          "60%": { transform: "scale(1.15) rotate(3deg)", opacity: "1" },
+          "100%": { transform: "scale(1) rotate(-3deg)", opacity: "1" },
+        },
+        "fire": {
+          "0%, 100%": { transform: "scaleY(1) scaleX(1)" },
+          "33%": { transform: "scaleY(1.1) scaleX(0.95)" },
+          "66%": { transform: "scaleY(0.95) scaleX(1.05)" },
+        },
+        "speed-flash": {
+          "0%": { opacity: "0", transform: "translateX(-100%)" },
+          "50%": { opacity: "1" },
+          "100%": { opacity: "0", transform: "translateX(100%)" },
+        },
+        "pulse-coral": {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(232,114,74,0)" },
+          "50%": { boxShadow: "0 0 0 8px rgba(232,114,74,0.15)" },
+        },
+        "draw-line": {
+          from: { strokeDashoffset: "1000" },
+          to: { strokeDashoffset: "0" },
         },
       },
       animation: {
-        flicker: "flicker 3s ease-in-out infinite",
-        pulse_orange: "pulse_orange 2s ease-in-out infinite",
-        slide_up: "slide_up 0.4s ease forwards",
-        charge: "charge 1s ease forwards",
+        "slide-up": "slide-up 0.4s ease forwards",
+        "bounce-in": "bounce-in 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards",
+        "fist-pump": "fist-pump 0.6s ease forwards",
+        "shake": "shake 0.4s ease-in-out",
+        "float": "float 3s ease-in-out infinite",
+        "impact-pop": "impact-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards",
+        "fire": "fire 0.8s ease-in-out infinite",
+        "speed-flash": "speed-flash 0.8s ease forwards",
+        "pulse-coral": "pulse-coral 2s ease-in-out infinite",
+        "draw-line": "draw-line 1s ease forwards",
       },
     },
   },

@@ -39,13 +39,15 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="bg-shadow border border-orange/20 rounded p-6 sm:p-8">
+    <div className="bg-white border-2 border-navy rounded-2xl shadow-[6px_6px_0px_#0D1B2A] p-6 sm:p-8">
       {/* Mode toggle */}
-      <div className="flex rounded bg-void border border-orange/10 p-1 mb-8">
+      <div className="flex rounded-xl bg-navy/5 border-2 border-navy/10 p-1 mb-8 gap-1">
         {(["login", "signup"] as const).map((m) => (
           <button key={m} onClick={() => setMode(m)}
-            className={`flex-1 py-2 text-xs font-black uppercase tracking-widest rounded transition-all ${
-              mode === m ? "bg-orange text-void" : "text-white/30 hover:text-white"
+            className={`flex-1 py-2 text-xs font-black uppercase tracking-widest rounded-lg transition-all ${
+              mode === m
+                ? "bg-coral text-white border-2 border-navy shadow-[2px_2px_0px_#0D1B2A]"
+                : "text-navy/40 hover:text-navy border-2 border-transparent"
             }`}>
             {m === "login" ? "Connexion" : "Inscription"}
           </button>
@@ -53,14 +55,18 @@ export default function AuthForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input label="Email" type="email" placeholder="ninja@clan.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <Input label="Email" type="email" placeholder="toi@goodmood.app" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <Input label="Mot de passe" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
 
-        {error && <div className="bg-red/10 border border-red/30 text-red-light text-xs font-bold uppercase tracking-wider px-4 py-3 rounded">{error}</div>}
-        {message && <div className="bg-orange/10 border border-orange/30 text-orange text-xs font-bold uppercase tracking-wider px-4 py-3 rounded">{message}</div>}
+        {error && (
+          <div className="bg-red-50 border-2 border-red-300 text-red-600 text-xs font-bold uppercase tracking-wider px-4 py-3 rounded-xl">{error}</div>
+        )}
+        {message && (
+          <div className="bg-coral/10 border-2 border-coral/40 text-coral-dark text-xs font-bold uppercase tracking-wider px-4 py-3 rounded-xl">{message}</div>
+        )}
 
         <Button type="submit" loading={loading} className="w-full mt-2">
-          {mode === "login" ? "Entrer dans le clan" : "Rejoindre le clan"}
+          {mode === "login" ? "Se connecter" : "Créer mon compte"}
         </Button>
       </form>
     </div>

@@ -1,23 +1,26 @@
 import Link from "next/link";
 import { ArrowRight, Sword, Salad, TrendingUp, Sparkles, Zap, Shield } from "lucide-react";
 import Button from "@/components/ui/Button";
+import Ryoku from "@/components/mascot/Ryoku";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-void overflow-x-hidden">
+    <div className="min-h-screen bg-cream overflow-x-hidden">
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-orange/10 bg-void/90 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b-2 border-navy bg-white shadow-[0_2px_0px_#0D1B2A]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-orange rounded flex items-center justify-center">
-              <span className="text-void font-black text-xs">GM</span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-coral border-2 border-navy rounded-xl shadow-[2px_2px_0px_#0D1B2A] flex items-center justify-center">
+              <span className="text-white font-black text-xs">GM</span>
             </div>
-            <span className="font-black uppercase tracking-tight text-white">Good<span className="text-orange">Mood</span></span>
+            <span className="font-black uppercase tracking-tight text-navy text-lg">
+              Good<span className="text-coral">Mood</span>
+            </span>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/blog" className="hidden sm:block text-xs font-black uppercase tracking-widest text-white/40 hover:text-orange transition-colors">
-              Parchemins
+            <Link href="/blog" className="hidden sm:block text-xs font-black uppercase tracking-widest text-navy/40 hover:text-coral transition-colors">
+              Blog
             </Link>
             <Link href="/auth">
               <Button size="sm">Rejoindre</Button>
@@ -28,113 +31,113 @@ export default function LandingPage() {
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center pt-14 overflow-hidden">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-hero-pattern" />
-        <div className="absolute inset-0 manga-lines opacity-50" />
-        {/* Diagonal accent */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange/5 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/50 to-transparent" />
+        {/* BG effects */}
+        <div className="absolute inset-0 bg-hero-paper" />
+        <div className="absolute inset-0 speed-lines opacity-60" />
+        {/* Halftone bottom-right */}
+        <div className="absolute bottom-0 right-0 w-80 h-80 halftone opacity-30" />
+        {/* Panel border bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-navy" />
 
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="animate-slide_up">
-              {/* Rank badge */}
-              <div className="inline-flex items-center gap-2 border border-orange/30 bg-orange/5 text-orange text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded mb-6">
-                <Zap size={12} className="fill-current" />
-                Rang S — Wellness Platform
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="animate-slide-up">
+              {/* Impact tag */}
+              <div className="inline-flex items-center gap-2 bg-coral border-2 border-navy rounded-xl px-3 py-1.5 shadow-[3px_3px_0px_#0D1B2A] mb-6">
+                <Zap size={12} className="text-white fill-current" />
+                <span className="text-white text-xs font-black uppercase tracking-widest">Rang S — Wellness Platform</span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase leading-none mb-4 text-white">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase leading-none mb-4 text-navy">
                 Surpasse
                 <br />
-                <span className="text-gradient-orange">tes limites.</span>
+                <span className="text-coral">tes limites.</span>
               </h1>
 
-              <p className="text-white/50 text-base sm:text-lg leading-relaxed mb-8 max-w-lg font-medium">
-                Programmes d&apos;entraînement ninja, nutrition de shinobi et développement du chakra.
-                Ton chemin vers le sommet commence ici.
+              <p className="text-navy/60 text-base sm:text-lg leading-relaxed mb-8 max-w-lg font-medium">
+                Programmes sport sur-mesure, nutrition calculée et développement bien-être.
+                Ton aventure vers la meilleure version de toi commence ici.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 mb-10">
                 <Link href="/auth" className="w-full sm:w-auto">
                   <Button size="lg" className="w-full sm:w-auto">
-                    Commencer l&apos;entraînement
+                    Commencer l&apos;aventure
                     <ArrowRight className="ml-2" size={18} />
                   </Button>
                 </Link>
                 <Link href="/blog" className="w-full sm:w-auto">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                    Lire les parchemins
+                    Lire le blog
                   </Button>
                 </Link>
               </div>
 
-              {/* Stats */}
-              <div className="flex gap-6 mt-10 pt-10 border-t border-orange/10">
+              {/* Stats — manga panel style */}
+              <div className="flex gap-6 pt-6 border-t-2 border-navy/10">
                 {[
-                  { label: "Ninjas actifs", value: "12K+" },
-                  { label: "Missions complétées", value: "98K+" },
+                  { label: "Membres actifs", value: "12K+" },
+                  { label: "Sessions complétées", value: "98K+" },
                   { label: "Rang moyen", value: "Jonin" },
                 ].map((s) => (
                   <div key={s.label}>
-                    <div className="text-xl sm:text-2xl font-black text-orange">{s.value}</div>
-                    <div className="text-xs text-white/30 uppercase tracking-widest font-bold">{s.label}</div>
+                    <div className="text-2xl font-black text-coral">{s.value}</div>
+                    <div className="text-xs text-navy/40 uppercase tracking-widest font-black">{s.label}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Feature cards grid */}
-            <div className="hidden lg:grid grid-cols-2 gap-3">
-              {[
-                { icon: Sword, title: "Missions Sport", desc: "Entraînement sur-mesure selon ton rang", color: "orange" },
-                { icon: Salad, title: "Rations Ninja", desc: "Nutrition calculée pour maximiser le chakra", color: "chakra" },
-                { icon: TrendingUp, title: "Progression", desc: "Monte en rang, visualise ton évolution", color: "red" },
-                { icon: Sparkles, title: "Chakra & Bien-être", desc: "Skincare, sommeil, suppléments de shinobi", color: "orange" },
-              ].map(({ icon: Icon, title, desc, color }) => (
-                <div key={title} className={`bg-shadow-light border rounded p-5 transition-all hover:border-orange/30 ${
-                  color === "orange" ? "border-orange/15" : color === "chakra" ? "border-chakra/15" : "border-red/15"
-                }`}>
-                  <div className={`w-9 h-9 rounded flex items-center justify-center mb-4 ${
-                    color === "orange" ? "bg-orange/20" : color === "chakra" ? "bg-chakra/20" : "bg-red/20"
-                  }`}>
-                    <Icon size={18} className={
-                      color === "orange" ? "text-orange" : color === "chakra" ? "text-chakra" : "text-red-light"
-                    } />
-                  </div>
-                  <h3 className="font-black uppercase text-xs tracking-wider text-white mb-1">{title}</h3>
-                  <p className="text-white/40 text-xs leading-relaxed">{desc}</p>
-                </div>
-              ))}
+            {/* Mascot + feature cards */}
+            <div className="hidden lg:flex flex-col items-center gap-6">
+              {/* Mascot Ryoku — hero pose */}
+              <div className="relative">
+                {/* Impact text */}
+                <div className="absolute -top-6 -left-8 onomatopoeia text-4xl rotate-[-8deg] z-10">PUSH!</div>
+                <div className="absolute -bottom-2 -right-6 onomatopoeia text-2xl rotate-[5deg] z-10">LET&apos;S GO!</div>
+                {/* Speed lines ring */}
+                <div className="absolute inset-0 speed-lines opacity-80 rounded-full scale-150" />
+                <Ryoku pose="running" size={280} className="relative z-10 drop-shadow-lg" />
+              </div>
+
+              {/* Mini feature tags */}
+              <div className="flex flex-wrap gap-2 justify-center">
+                {["Sport sur-mesure", "Nutrition calculée", "Progression de rang", "Bien-être & Chakra"].map((tag) => (
+                  <span key={tag} className="manga-tag">{tag}</span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FEATURES */}
-      <section className="py-20 sm:py-32 px-4 sm:px-6 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/30 to-transparent" />
+      <section className="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t-2 border-navy relative">
+        {/* Section header — manga panel */}
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="text-xs font-black uppercase tracking-widest text-orange mb-3">Arsenal complet</div>
-            <h2 className="text-3xl sm:text-5xl font-black uppercase text-white">
-              Tout l&apos;équipement<br/>
-              <span className="text-gradient-orange">du ninja parfait</span>
+          <div className="text-center mb-12">
+            <div className="inline-block bg-coral border-2 border-navy rounded-xl px-3 py-1 shadow-[3px_3px_0px_#0D1B2A] text-xs font-black uppercase tracking-widest text-white mb-4">
+              Arsenal complet
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-black uppercase text-navy">
+              Tout ce qu&apos;il te faut<br/>
+              <span className="text-coral">pour progresser</span>
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((f) => (
-              <div key={f.title} className="bg-shadow-light border border-orange/10 rounded p-6 sm:p-8 hover:border-orange/30 hover:bg-shadow transition-all group">
-                <div className="w-12 h-12 rounded bg-orange/10 border border-orange/20 flex items-center justify-center mb-5 group-hover:bg-orange/20 group-hover:border-orange/40 transition-all">
-                  <f.icon size={22} className="text-orange" />
+              <div key={f.title}
+                className="bg-white border-2 border-navy rounded-2xl p-6 shadow-[4px_4px_0px_#0D1B2A] hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-[6px_6px_0px_#E8724A] transition-all duration-150 group screen-tone">
+                <div className="w-12 h-12 rounded-xl bg-coral border-2 border-navy shadow-[3px_3px_0px_#0D1B2A] flex items-center justify-center mb-4">
+                  <f.icon size={20} className="text-white" />
                 </div>
-                <h3 className="text-sm font-black uppercase tracking-wider text-white mb-2">{f.title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed mb-4">{f.description}</p>
+                <h3 className="text-sm font-black uppercase tracking-wider text-navy mb-2">{f.title}</h3>
+                <p className="text-navy/50 text-sm leading-relaxed mb-4">{f.description}</p>
                 <ul className="space-y-1.5">
                   {f.points.map((p) => (
-                    <li key={p} className="flex items-center gap-2 text-xs text-white/50">
-                      <span className="w-1 h-1 rounded-full bg-orange shrink-0" />
+                    <li key={p} className="flex items-center gap-2 text-xs text-navy/60 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-coral shrink-0" />
                       {p}
                     </li>
                   ))}
@@ -145,30 +148,58 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* MASCOT SECTION */}
+      <section className="py-20 px-4 sm:px-6 bg-navy border-t-2 border-b-2 border-navy relative overflow-hidden">
+        <div className="absolute inset-0 speed-lines opacity-20" />
+        <div className="absolute inset-0 halftone opacity-10" />
+        <div className="relative max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-10">
+          <div className="shrink-0">
+            <Ryoku pose="idle" size={180} />
+          </div>
+          <div>
+            {/* Speech bubble */}
+            <div className="bg-white border-2 border-navy rounded-2xl p-5 shadow-[6px_6px_0px_#E8724A] mb-4 relative">
+              <p className="text-navy font-bold text-lg leading-relaxed">
+                &ldquo;Salut ! Je suis <span className="text-coral font-black">Ryoku</span>, ton coach ninja personnel.
+                Je vais t&apos;accompagner pas à pas pour atteindre tes objectifs !&rdquo;
+              </p>
+              <div className="absolute -bottom-3 left-8 w-6 h-3 bg-white border-b-2 border-r-2 border-navy rotate-45" />
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <span className="manga-tag">Sport personnalisé</span>
+              <span className="manga-tag">Nutrition sur-mesure</span>
+              <span className="manga-tag">Coaching wellness</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="py-20 sm:py-32 px-4 sm:px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-orange/5 to-transparent" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/40 to-transparent" />
+      <section className="py-20 sm:py-28 px-4 sm:px-6 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 halftone opacity-20" />
         <div className="relative max-w-2xl mx-auto text-center">
-          <Shield size={40} className="text-orange mx-auto mb-6 opacity-50" />
-          <h2 className="text-3xl sm:text-5xl font-black uppercase text-white mb-4">
-            Prêt à devenir<br />
-            <span className="text-gradient-orange">Hokage ?</span>
+          <div className="mb-6 flex justify-center">
+            <Ryoku pose="fistpump" size={120} />
+          </div>
+          <div className="onomatopoeia text-3xl sm:text-5xl mb-4">LEVEL UP!</div>
+          <h2 className="text-3xl sm:text-4xl font-black uppercase text-navy mb-4">
+            Prêt à devenir la<br />
+            <span className="text-coral">meilleure version de toi ?</span>
           </h2>
-          <p className="text-white/40 mb-8 text-sm sm:text-base font-medium">
-            Rejoins des milliers de ninjas qui ont déjà transformé leur corps et leur esprit.
+          <p className="text-navy/50 mb-8 text-sm sm:text-base font-medium">
+            Rejoins des milliers de membres qui ont déjà transformé leur corps et leur esprit.
           </p>
           <Link href="/auth">
             <Button size="lg">
-              Commencer maintenant
+              Créer mon profil gratuit
               <ArrowRight className="ml-2" size={18} />
             </Button>
           </Link>
         </div>
       </section>
 
-      <footer className="border-t border-orange/10 py-6 px-6 text-center">
-        <p className="text-white/20 text-xs font-bold uppercase tracking-widest">
+      <footer className="border-t-2 border-navy bg-white py-6 px-6 text-center">
+        <p className="text-navy/30 text-xs font-black uppercase tracking-widest">
           © 2024 GoodMood — Ninja Wellness Platform
         </p>
       </footer>
@@ -179,38 +210,38 @@ export default function LandingPage() {
 const features = [
   {
     icon: Sword,
-    title: "Missions Sport",
-    description: "Des séances générées selon ton rang, ton équipement et tes objectifs de shinobi.",
-    points: ["Planning semaine complet", "Instructions & techniques", "Suivi des missions"],
+    title: "Sport sur-mesure",
+    description: "Séances générées selon ton équipement, tes objectifs et ta fréquence d'entraînement.",
+    points: ["Planning semaine complet", "Instructions détaillées", "Suivi des sessions"],
   },
   {
     icon: Salad,
-    title: "Rations du Clan",
-    description: "Macros calculés au gramme près avec des plans repas pour maximiser ton chakra.",
-    points: ["Calories & macros précis", "Liste de courses", "Adapté à ton régime"],
+    title: "Nutrition calculée",
+    description: "Macros précis et plans repas adaptés à tes objectifs et ton régime alimentaire.",
+    points: ["Calories & macros précis", "Liste de courses auto", "Adapté à ton régime"],
   },
   {
     icon: TrendingUp,
-    title: "Progression de Rang",
-    description: "Visualise ta montée en niveau avec des graphiques et check-ins hebdomadaires.",
-    points: ["Charts interactifs", "Poids & mesures", "Performances de combat"],
+    title: "Suivi de progression",
+    description: "Visualise ton évolution avec des graphiques et monte en rang au fil des sessions.",
+    points: ["Charts interactifs", "Suivi du poids", "Système de rangs"],
   },
   {
     icon: Sparkles,
-    title: "Développement du Chakra",
-    description: "Routines de shinobi, skincare selon ton âge, suppléments recommandés.",
+    title: "Bien-être & Chakra",
+    description: "Routines matin/soir, skincare adapté à ton âge, suppléments recommandés.",
     points: ["Routine matin & soir", "Skincare ciblé", "Suppléments optimaux"],
   },
   {
     icon: Zap,
-    title: "Parchemins",
-    description: "Articles experts en entraînement, nutrition, mindset et bien-être ninja.",
-    points: ["Articles catégorisés", "Conseils de Sensei", "Mise à jour régulière"],
+    title: "Blog & Conseils",
+    description: "Articles experts en entraînement, nutrition, mindset et bien-être.",
+    points: ["Articles catégorisés", "Conseils d'experts", "Mises à jour régulières"],
   },
   {
     icon: Shield,
-    title: "Sensei Personnel",
-    description: "Pose tes questions à ton coach et obtiens des réponses personnalisées.",
+    title: "Coach personnel",
+    description: "Pose tes questions et obtiens des réponses personnalisées de ton coach.",
     points: ["Messagerie directe", "Réponses rapides", "Suivi personnalisé"],
   },
 ];

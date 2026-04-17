@@ -11,20 +11,20 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", loading, children, disabled, ...props }, ref) => {
-    const base = "relative inline-flex items-center justify-center font-black uppercase tracking-widest transition-all duration-200 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden";
+    const base = "relative inline-flex items-center justify-center font-black uppercase tracking-widest transition-all duration-150 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed active:translate-y-0.5";
 
     const variants = {
-      primary: "bg-orange text-void hover:bg-orange-light shadow-orange hover:shadow-[0_0_40px_rgba(255,107,0,0.7)] border border-orange/50",
-      secondary: "bg-chakra text-void hover:bg-chakra-light shadow-chakra border border-chakra/50",
-      outline: "border border-orange/50 text-orange hover:bg-orange/10 hover:border-orange hover:glow-orange",
-      ghost: "text-white-dim hover:text-white hover:bg-white/5",
-      danger: "bg-red text-white hover:bg-red-light border border-red/50",
+      primary: "bg-coral text-white border-2 border-navy shadow-[3px_3px_0px_#0D1B2A] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#0D1B2A] hover:bg-coral-light active:shadow-[1px_1px_0px_#0D1B2A]",
+      secondary: "bg-navy text-white border-2 border-navy shadow-[3px_3px_0px_rgba(13,27,42,0.3)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_rgba(13,27,42,0.3)]",
+      outline: "bg-white text-coral border-2 border-coral shadow-[3px_3px_0px_#E8724A] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#E8724A] hover:bg-coral-50",
+      ghost: "bg-transparent text-navy/60 hover:text-navy hover:bg-navy/5 border-2 border-transparent",
+      danger: "bg-red-500 text-white border-2 border-red-700 shadow-[3px_3px_0px_#991b1b] hover:-translate-y-0.5",
     };
 
     const sizes = {
-      sm: "px-4 py-2 text-xs rounded",
-      md: "px-6 py-3 text-sm rounded",
-      lg: "px-8 py-4 text-base rounded",
+      sm: "px-4 py-2 text-xs rounded-lg",
+      md: "px-6 py-3 text-sm rounded-xl",
+      lg: "px-8 py-4 text-base rounded-xl",
     };
 
     return (
@@ -40,10 +40,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         )}
-        {/* Shine effect */}
-        <span className="absolute inset-0 overflow-hidden rounded">
-          <span className="absolute -inset-x-full top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        </span>
         {children}
       </button>
     );

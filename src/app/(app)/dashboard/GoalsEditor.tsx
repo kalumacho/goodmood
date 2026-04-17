@@ -41,66 +41,69 @@ export default function GoalsEditor({ currentGoals, currentSessions, userId }: P
   return (
     <>
       <button onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-orange hover:text-orange-light border border-orange/30 hover:border-orange bg-orange/5 hover:bg-orange/10 px-3 py-2 rounded transition-all">
+        className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-coral hover:text-coral-dark bg-white border-2 border-coral rounded-xl px-3 py-2 shadow-[2px_2px_0px_#E8724A] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_#E8724A] transition-all">
         <Target size={13} />
         Changer les objectifs
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          <div className="absolute inset-0 bg-void/80 backdrop-blur-sm" onClick={() => setOpen(false)} />
-          <div className="relative bg-shadow border border-orange/30 rounded w-full max-w-md p-6 animate-slide_up max-h-[90vh] overflow-y-auto">
+          <div className="absolute inset-0 bg-navy/40 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="relative bg-white border-2 border-navy rounded-2xl shadow-[8px_8px_0px_#0D1B2A] w-full max-w-md p-6 animate-bounce-in max-h-[90vh] overflow-y-auto">
 
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-lg font-black uppercase tracking-wider text-white">Objectifs</h2>
-                <p className="text-xs text-white/30 uppercase tracking-widest font-bold">Redéfinir ta mission</p>
+                <h2 className="text-lg font-black uppercase tracking-wider text-navy">Objectifs</h2>
+                <p className="text-xs text-navy/40 uppercase tracking-widest font-bold">Redéfinir ta mission</p>
               </div>
-              <button onClick={() => setOpen(false)} className="p-1.5 text-white/30 hover:text-white rounded hover:bg-white/5 transition-all">
+              <button onClick={() => setOpen(false)}
+                className="p-1.5 text-navy/30 hover:text-navy rounded-lg hover:bg-navy/5 border-2 border-transparent transition-all">
                 <X size={18} />
               </button>
             </div>
 
-            {/* Goals */}
-            <div className="mb-6">
-              <p className="text-xs font-black uppercase tracking-widest text-white/40 mb-3">Objectif(s)</p>
+            <div className="mb-5">
+              <p className="text-xs font-black uppercase tracking-widest text-navy/40 mb-3">Objectif(s)</p>
               <div className="space-y-2">
                 {GOALS.map((g) => (
                   <button key={g.value} onClick={() => toggleGoal(g.value)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded border text-left transition-all ${
-                      goals.includes(g.value) ? "border-orange/60 bg-orange/10" : "border-white/5 bg-shadow-light hover:border-orange/20"
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-left transition-all ${
+                      goals.includes(g.value)
+                        ? "border-coral bg-coral/5 shadow-[3px_3px_0px_#E8724A]"
+                        : "border-navy/15 hover:border-coral/50 hover:bg-coral/5"
                     }`}>
                     <span className="text-xl">{g.emoji}</span>
                     <div className="flex-1">
-                      <div className={`text-xs font-black uppercase tracking-wider ${goals.includes(g.value) ? "text-orange" : "text-white/70"}`}>{g.label}</div>
-                      <div className="text-xs text-white/30">{g.desc}</div>
+                      <div className={`text-xs font-black uppercase tracking-wider ${goals.includes(g.value) ? "text-coral" : "text-navy/70"}`}>{g.label}</div>
+                      <div className="text-xs text-navy/40">{g.desc}</div>
                     </div>
-                    {goals.includes(g.value) && <Check size={14} className="text-orange" />}
+                    {goals.includes(g.value) && <Check size={14} className="text-coral" />}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Sessions */}
-            <div className="mb-6">
-              <p className="text-xs font-black uppercase tracking-widest text-white/40 mb-3">Séances par semaine</p>
+            <div className="mb-5">
+              <p className="text-xs font-black uppercase tracking-widest text-navy/40 mb-3">Séances par semaine</p>
               <div className="grid grid-cols-5 gap-2">
                 {SESSIONS.map((s) => (
                   <button key={s} onClick={() => setSessions(s)}
-                    className={`flex flex-col items-center py-3 rounded border transition-all ${
-                      sessions === s ? "border-orange/60 bg-orange/10" : "border-white/5 bg-shadow-light hover:border-orange/20"
+                    className={`flex flex-col items-center py-3 rounded-xl border-2 transition-all ${
+                      sessions === s
+                        ? "border-coral bg-coral/5 shadow-[2px_2px_0px_#E8724A]"
+                        : "border-navy/15 hover:border-coral/50"
                     }`}>
-                    <span className={`text-lg font-black ${sessions === s ? "text-orange" : "text-white/50"}`}>{s}x</span>
-                    <span className="text-xs text-white/30 font-bold">{RANK_LABELS[s]}</span>
+                    <span className={`text-lg font-black ${sessions === s ? "text-coral" : "text-navy/50"}`}>{s}x</span>
+                    <span className="text-xs text-navy/40 font-bold">{RANK_LABELS[s]}</span>
                   </button>
                 ))}
               </div>
             </div>
 
             {goals.length > 0 && (
-              <div className="bg-orange/5 border border-orange/20 rounded px-4 py-3 mb-5 text-xs text-white/50 font-bold uppercase tracking-wider">
-                <span className="text-orange">Mission : </span>
-                {goals.map((g) => GOALS.find(x => x.value === g)?.label).join(" + ")} · {sessions}x/semaine · Rang {RANK_LABELS[sessions]}
+              <div className="bg-coral/5 border-2 border-coral/30 rounded-xl px-4 py-3 mb-5 text-xs text-navy/60 font-bold uppercase tracking-wider">
+                <span className="text-coral">Mission : </span>
+                {goals.map((g) => GOALS.find(x => x.value === g)?.label).join(" + ")} · {sessions}x/sem · {RANK_LABELS[sessions]}
               </div>
             )}
 
