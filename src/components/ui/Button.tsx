@@ -4,26 +4,27 @@ import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", loading, children, disabled, ...props }, ref) => {
-    const base = "inline-flex items-center justify-center font-semibold rounded-card transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-coral/50 disabled:opacity-50 disabled:cursor-not-allowed";
+    const base = "relative inline-flex items-center justify-center font-black uppercase tracking-widest transition-all duration-200 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden";
 
     const variants = {
-      primary: "bg-coral text-white hover:bg-coral-dark shadow-md hover:shadow-lg hover:-translate-y-0.5",
-      secondary: "bg-sage text-white hover:bg-sage-dark shadow-md hover:shadow-lg hover:-translate-y-0.5",
-      outline: "border-2 border-coral text-coral hover:bg-coral hover:text-white",
-      ghost: "text-navy hover:bg-navy/5",
+      primary: "bg-orange text-void hover:bg-orange-light shadow-orange hover:shadow-[0_0_40px_rgba(255,107,0,0.7)] border border-orange/50",
+      secondary: "bg-chakra text-void hover:bg-chakra-light shadow-chakra border border-chakra/50",
+      outline: "border border-orange/50 text-orange hover:bg-orange/10 hover:border-orange hover:glow-orange",
+      ghost: "text-white-dim hover:text-white hover:bg-white/5",
+      danger: "bg-red text-white hover:bg-red-light border border-red/50",
     };
 
     const sizes = {
-      sm: "px-4 py-2 text-sm",
-      md: "px-6 py-3 text-base",
-      lg: "px-8 py-4 text-lg",
+      sm: "px-4 py-2 text-xs rounded",
+      md: "px-6 py-3 text-sm rounded",
+      lg: "px-8 py-4 text-base rounded",
     };
 
     return (
@@ -39,6 +40,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         )}
+        {/* Shine effect */}
+        <span className="absolute inset-0 overflow-hidden rounded">
+          <span className="absolute -inset-x-full top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        </span>
         {children}
       </button>
     );

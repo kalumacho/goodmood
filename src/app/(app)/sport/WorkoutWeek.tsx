@@ -2,69 +2,37 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Card } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
-import { Check, ChevronDown, ChevronUp, Moon } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Moon, Sword } from "lucide-react";
 
-type Exercise = {
-  name: string;
-  sets: number;
-  reps: string;
-  rest: string;
-  instructions: string;
-};
+type Exercise = { name: string; sets: number; reps: string; rest: string; instructions: string };
+type DaySession = { day: string; title: string; exercises: Exercise[]; isRest: boolean };
 
-type DaySession = {
-  day: string;
-  title: string;
-  exercises: Exercise[];
-  isRest: boolean;
-};
-
-export default function WorkoutWeek({
-  plan,
-  userId,
-  completedDays,
-}: {
-  plan: DaySession[];
-  userId: string;
-  completedDays: string[];
+export default function WorkoutWeek({ plan, userId, completedDays }: {
+  plan: DaySession[]; userId: string; completedDays: string[];
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [done, setDone] = useState<Set<string>>(() => new Set(completedDays.map((d) => d.toLowerCase())));
   const [loading, setLoading] = useState<string | null>(null);
   const supabase = createClient();
 
-  const today = new Date()
-    .toLocaleDateString("fr-FR", { weekday: "long" })
-    .toLowerCase();
+  const today = new Date().toLocaleDateString("fr-FR", { weekday: "long" }).toLowerCase();
 
   const toggleDone = async (day: string) => {
     setLoading(day);
     const dayLower = day.toLowerCase();
     if (done.has(dayLower)) {
-      const { error } = await supabase
-        .from("completed_sessions")
-        .delete()
-        .eq("user_id", userId)
-        .eq("session_id", day);
-      if (!error) {
-        setDone((prev) => { const next = new Set(Array.from(prev)); next.delete(dayLower); return next; });
-      }
+      const { error } = await supabase.from("completed_sessions").delete().eq("user_id", userId).eq("session_id", day);
+      if (!error) setDone((prev) => { const next = new Set(Array.from(prev)); next.delete(dayLower); return next; });
     } else {
-      const { error } = await supabase.from("completed_sessions").insert({
-        user_id: userId,
-        session_id: day,
-      });
-      if (!error) {
-        setDone((prev) => { const next = new Set(Array.from(prev)); next.add(dayLower); return next; });
-      }
+      const { error } = await supabase.from("completed_sessions").insert({ user_id: userId, session_id: day });
+      if (!error) setDone((prev) => { const next = new Set(Array.from(prev)); next.add(dayLower); return next; });
     }
     setLoading(null);
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {plan.map((session) => {
         const dayLower = session.day.toLowerCase();
         const isToday = dayLower === today;
@@ -72,61 +40,66 @@ export default function WorkoutWeek({
         const isOpen = expanded === session.day;
 
         return (
-          <Card
-            key={session.day}
-            className={`transition-all ${isToday ? "ring-2 ring-coral" : ""}`}
-          >
-            <button
-              className="w-full flex items-center gap-4 text-left"
-              onClick={() => !session.isRest && setExpanded(isOpen ? null : session.day)}
-            >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-bold text-sm ${
-                isDone ? "bg-sage/20 text-sage-dark" : isToday ? "bg-coral/20 text-coral" : "bg-navy/5 text-navy/40"
+          <div key={session.day}
+            className={`bg-shadow border rounded transition-all ${
+              isToday ? "border-orange/50 shadow-orange" : isDone ? "border-orange/20" : "border-white/5"
+            }`}>
+            <button className="w-full flex items-center gap-3 sm:gap-4 p-4 text-left"
+              onClick={() => !session.isRest && setExpanded(isOpen ? null : session.day)}>
+              {/* Day indicator */}
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded flex items-center justify-center shrink-0 font-black text-xs border ${
+                isDone ? "bg-orange/20 border-orange/40 text-orange" :
+                isToday ? "bg-orange text-void border-orange" :
+                "bg-void border-white/10 text-white/30"
               }`}>
-                {isDone ? <Check size={20} /> : session.day.slice(0, 3)}
+                {isDone ? <Check size={18} /> : session.day.slice(0, 3).toUpperCase()}
               </div>
+
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className={`font-bold ${isToday ? "text-coral" : "text-navy"}`}>{session.day}</span>
-                  {isToday && <span className="text-xs bg-coral text-white px-2 py-0.5 rounded-full">Aujourd&apos;hui</span>}
-                  {isDone && <span className="text-xs bg-sage/20 text-sage-dark px-2 py-0.5 rounded-full">✅ Complété</span>}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`font-black uppercase text-sm tracking-wide ${isToday ? "text-orange" : "text-white"}`}>
+                    {session.day}
+                  </span>
+                  {isToday && <span className="text-xs bg-orange text-void font-black uppercase tracking-widest px-2 py-0.5 rounded">Aujourd&apos;hui</span>}
+                  {isDone && <span className="text-xs border border-orange/30 text-orange font-black uppercase tracking-widest px-2 py-0.5 rounded">✓ Accomplie</span>}
                 </div>
-                <p className="text-navy/50 text-sm">{session.isRest ? "Repos" : `${session.title} · ${session.exercises.length} exercices`}</p>
+                <p className="text-white/30 text-xs font-bold uppercase tracking-widest mt-0.5">
+                  {session.isRest ? "Repos — récupération" : `${session.title} · ${session.exercises.length} exercices`}
+                </p>
               </div>
+
               {!session.isRest && (
-                isOpen ? <ChevronUp size={18} className="text-navy/30" /> : <ChevronDown size={18} className="text-navy/30" />
+                isOpen ? <ChevronUp size={16} className="text-orange shrink-0" /> : <ChevronDown size={16} className="text-white/20 shrink-0" />
               )}
-              {session.isRest && <Moon size={18} className="text-navy/20" />}
+              {session.isRest && <Moon size={16} className="text-white/10 shrink-0" />}
             </button>
 
             {isOpen && !session.isRest && (
-              <div className="mt-6 space-y-4 border-t border-navy/5 pt-6">
+              <div className="px-4 pb-4 space-y-3 border-t border-orange/10 pt-4">
                 {session.exercises.map((ex, i) => (
-                  <div key={i} className="bg-cream rounded-xl p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-navy">{ex.name}</h4>
-                      <span className="text-xs text-navy/40 bg-white px-2 py-1 rounded-lg">{ex.rest} repos</span>
+                  <div key={i} className="bg-shadow-light border border-white/5 rounded p-3 sm:p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-orange font-black text-xs">{String(i + 1).padStart(2, "0")}</span>
+                        <h4 className="font-black uppercase text-xs sm:text-sm tracking-wide text-white">{ex.name}</h4>
+                      </div>
+                      <span className="text-xs text-white/30 bg-void border border-white/5 px-2 py-1 rounded font-bold">{ex.rest} repos</span>
                     </div>
-                    <div className="flex gap-4 text-sm text-navy/70 mb-2">
-                      <span><strong className="text-navy">{ex.sets}</strong> séries</span>
-                      <span><strong className="text-navy">{ex.reps}</strong> reps</span>
+                    <div className="flex gap-4 text-xs font-black uppercase tracking-widest text-white/50 mb-2">
+                      <span><span className="text-orange">{ex.sets}</span> séries</span>
+                      <span><span className="text-orange">{ex.reps}</span> reps</span>
                     </div>
-                    <p className="text-xs text-navy/50 italic">💡 {ex.instructions}</p>
+                    <p className="text-xs text-white/30 border-l-2 border-orange/30 pl-2">{ex.instructions}</p>
                   </div>
                 ))}
-
-                <Button
-                  onClick={() => toggleDone(session.day)}
-                  loading={loading === session.day}
-                  variant={isDone ? "outline" : "primary"}
-                  className="w-full mt-2"
-                >
-                  <Check size={16} className="mr-2" />
-                  {isDone ? "Annuler la complétion" : "Marquer comme complétée"}
+                <Button onClick={() => toggleDone(session.day)} loading={loading === session.day}
+                  variant={isDone ? "outline" : "primary"} className="w-full mt-2">
+                  <Sword size={14} className="mr-2" />
+                  {isDone ? "Annuler la mission" : "Mission accomplie !"}
                 </Button>
               </div>
             )}
-          </Card>
+          </div>
         );
       })}
     </div>

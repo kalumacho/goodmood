@@ -92,26 +92,31 @@ export default function OnboardingFlow() {
   };
 
   return (
-    <div className="w-full max-w-lg">
+    <div className="w-full max-w-lg mx-auto">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-black text-navy mb-2">
-          Good<span className="text-coral">Mood</span>
-        </h1>
-        <p className="text-navy/60">Personnalise ton expérience — Étape {step}/{TOTAL_STEPS}</p>
+        <div className="inline-flex items-center gap-2 mb-3">
+          <div className="w-8 h-8 bg-orange rounded flex items-center justify-center">
+            <span className="text-void font-black text-sm">GM</span>
+          </div>
+          <h1 className="text-2xl font-black uppercase text-white">
+            Good<span className="text-orange">Mood</span>
+          </h1>
+        </div>
+        <p className="text-white/30 text-xs font-black uppercase tracking-widest">
+          Initialisation du ninja — Phase {step}/{TOTAL_STEPS}
+        </p>
       </div>
 
-      <div className="flex gap-1.5 mb-8">
+      {/* Progress bar */}
+      <div className="flex gap-1 mb-8">
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-          <div
-            key={i}
-            className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-              i + 1 <= step ? "bg-coral" : "bg-navy/10"
-            }`}
-          />
+          <div key={i} className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+            i + 1 <= step ? "bg-orange shadow-orange" : "bg-white/5"
+          }`} />
         ))}
       </div>
 
-      <div className="bg-white rounded-card p-8 shadow-card animate-fade-in">
+      <div className="bg-shadow border border-orange/20 rounded p-6 sm:p-8 animate-fade-in">
         {step === 1 && (
           <StepPersonalInfo data={data} onChange={(k, v) => setData((p) => ({ ...p, [k]: v }))} />
         )}
@@ -135,7 +140,7 @@ export default function OnboardingFlow() {
         )}
 
         {error && (
-          <div className="mt-4 bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl">{error}</div>
+          <div className="mt-4 bg-red/10 border border-red/30 text-red-light text-xs font-black uppercase tracking-wider px-4 py-3 rounded">{error}</div>
         )}
 
         <div className="flex gap-3 mt-8">
@@ -162,8 +167,8 @@ export default function OnboardingFlow() {
 function StepPersonalInfo({ data, onChange }: { data: OnboardingData; onChange: (k: string, v: string) => void }) {
   return (
     <div>
-      <h2 className="text-2xl font-bold text-navy mb-1">Parle-moi de toi</h2>
-      <p className="text-navy/50 mb-6 text-sm">Ces informations servent à calculer tes besoins.</p>
+      <h2 className="text-xl font-black uppercase tracking-wide text-white mb-1">Identité du ninja</h2>
+      <p className="text-white/30 mb-6 text-xs font-bold uppercase tracking-widest">Ces infos calculent tes besoins en chakra.</p>
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <Input label="Âge" type="number" placeholder="25" value={data.age} onChange={(e) => onChange("age", e.target.value)} min="16" max="80" />
@@ -172,7 +177,7 @@ function StepPersonalInfo({ data, onChange }: { data: OnboardingData; onChange: 
             <div className="grid grid-cols-2 gap-2">
               {["male", "female"].map((g) => (
                 <button key={g} type="button" onClick={() => onChange("gender", g)}
-                  className={`py-3 rounded-xl border-2 text-sm font-medium transition-all ${data.gender === g ? "border-coral bg-coral/5 text-coral" : "border-navy/10 text-navy/60 hover:border-navy/20"}`}>
+                  className={`py-3 rounded border text-xs font-black uppercase tracking-widest transition-all ${data.gender === g ? "border-orange/60 bg-orange/10 text-orange" : "border-white/10 text-white/30 hover:border-orange/30"}`}>
                   {g === "male" ? "Homme" : "Femme"}
                 </button>
               ))}
@@ -196,8 +201,8 @@ function StepGoal({ goals, toggle }: { goals: string[]; toggle: (v: string) => v
   ];
   return (
     <div>
-      <h2 className="text-2xl font-bold text-navy mb-1">Ton objectif principal</h2>
-      <p className="text-navy/50 mb-6 text-sm">Tu peux en sélectionner plusieurs.</p>
+      <h2 className="text-xl font-black uppercase tracking-wide text-white mb-1">Objectif de mission</h2>
+      <p className="text-white/30 mb-6 text-xs font-bold uppercase tracking-widest">Sélectionne ta ou tes cibles.</p>
       <div className="space-y-3">
         {options.map((o) => (
           <SelectCard key={o.value} selected={goals.includes(o.value)} onClick={() => toggle(o.value)} label={o.label} emoji={o.emoji} />
@@ -217,8 +222,8 @@ function StepSessionsPerWeek({ value, onChange }: { value: string; onChange: (v:
   ];
   return (
     <div>
-      <h2 className="text-2xl font-bold text-navy mb-1">Fréquence d&apos;entraînement</h2>
-      <p className="text-navy/50 mb-6 text-sm">Combien de séances de sport par semaine ?</p>
+      <h2 className="text-xl font-black uppercase tracking-wide text-white mb-1">Fréquence d&apos;entraînement</h2>
+      <p className="text-white/30 mb-6 text-xs font-bold uppercase tracking-widest">Combien de missions par semaine ?</p>
       <div className="space-y-3">
         {options.map((o) => (
           <SelectCard key={o.value} selected={value === o.value} onClick={() => onChange(o.value)} label={o.label} desc={o.desc} emoji={o.emoji} />
@@ -237,8 +242,8 @@ function StepActivity({ value, onChange }: { value: string; onChange: (v: string
   ];
   return (
     <div>
-      <h2 className="text-2xl font-bold text-navy mb-1">Niveau d&apos;activité quotidien</h2>
-      <p className="text-navy/50 mb-6 text-sm">En dehors du sport — pour calculer tes calories.</p>
+      <h2 className="text-xl font-black uppercase tracking-wide text-white mb-1">Niveau d&apos;activité</h2>
+      <p className="text-white/30 mb-6 text-xs font-bold uppercase tracking-widest">En dehors des missions — pour calibrer le chakra.</p>
       <div className="space-y-3">
         {options.map((o) => (
           <SelectCard key={o.value} selected={value === o.value} onClick={() => onChange(o.value)} label={o.label} desc={o.desc} emoji={o.emoji} />
@@ -256,8 +261,8 @@ function StepEquipment({ value, onChange }: { value: string; onChange: (v: strin
   ];
   return (
     <div>
-      <h2 className="text-2xl font-bold text-navy mb-1">Équipement disponible</h2>
-      <p className="text-navy/50 mb-6 text-sm">Pour adapter tes séances.</p>
+      <h2 className="text-xl font-black uppercase tracking-wide text-white mb-1">Arsenal disponible</h2>
+      <p className="text-white/30 mb-6 text-xs font-bold uppercase tracking-widest">Quel équipement as-tu pour t&apos;entraîner ?</p>
       <div className="space-y-3">
         {options.map((o) => (
           <SelectCard key={o.value} selected={value === o.value} onClick={() => onChange(o.value)} label={o.label} desc={o.desc} emoji={o.emoji} />
@@ -276,8 +281,8 @@ function StepDiet({ value, onChange }: { value: string; onChange: (v: string) =>
   ];
   return (
     <div>
-      <h2 className="text-2xl font-bold text-navy mb-1">Préférence alimentaire</h2>
-      <p className="text-navy/50 mb-6 text-sm">Pour adapter tes plans nutritionnels.</p>
+      <h2 className="text-xl font-black uppercase tracking-wide text-white mb-1">Régime alimentaire</h2>
+      <p className="text-white/30 mb-6 text-xs font-bold uppercase tracking-widest">Pour adapter tes rations de ninja.</p>
       <div className="space-y-3">
         {options.map((o) => (
           <SelectCard key={o.value} selected={value === o.value} onClick={() => onChange(o.value)} label={o.label} desc={o.desc} emoji={o.emoji} />
@@ -297,8 +302,8 @@ function StepWellness({ focus, toggle }: { focus: string[]; toggle: (v: string) 
   ];
   return (
     <div>
-      <h2 className="text-2xl font-bold text-navy mb-1">Focus bien-être</h2>
-      <p className="text-navy/50 mb-6 text-sm">Quels aspects veux-tu améliorer ?</p>
+      <h2 className="text-xl font-black uppercase tracking-wide text-white mb-1">Développement du chakra</h2>
+      <p className="text-white/30 mb-6 text-xs font-bold uppercase tracking-widest">Quels pouvoirs veux-tu développer ?</p>
       <div className="grid grid-cols-2 gap-3">
         {options.map((o) => (
           <SelectCard key={o.value} selected={focus.includes(o.value)} onClick={() => toggle(o.value)} label={o.label} emoji={o.emoji} />
@@ -313,13 +318,15 @@ function SelectCard({ selected, onClick, label, desc, emoji }: {
 }) {
   return (
     <button type="button" onClick={onClick}
-      className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all ${selected ? "border-coral bg-coral/5" : "border-navy/10 hover:border-navy/20"}`}>
+      className={`w-full flex items-center gap-4 p-4 rounded border text-left transition-all ${
+        selected ? "border-orange/50 bg-orange/10" : "border-white/5 bg-shadow-light hover:border-orange/20"
+      }`}>
       <span className="text-2xl">{emoji}</span>
       <div className="flex-1">
-        <div className={`font-semibold text-sm ${selected ? "text-coral" : "text-navy"}`}>{label}</div>
-        {desc && <div className="text-navy/50 text-xs">{desc}</div>}
+        <div className={`font-black uppercase text-xs tracking-wider ${selected ? "text-orange" : "text-white/70"}`}>{label}</div>
+        {desc && <div className="text-white/30 text-xs mt-0.5">{desc}</div>}
       </div>
-      {selected && <Check size={18} className="text-coral shrink-0" />}
+      {selected && <Check size={16} className="text-orange shrink-0" />}
     </button>
   );
 }

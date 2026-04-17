@@ -5,6 +5,7 @@ import { generateWeeklyPlan } from "@/lib/workout-generator";
 import WorkoutWeek from "./WorkoutWeek";
 import type { Metadata } from "next";
 import type { UserProfile } from "@/types/database";
+// Card not needed here
 
 export const metadata: Metadata = { title: "Sport" };
 

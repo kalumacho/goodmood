@@ -1,106 +1,140 @@
 import Link from "next/link";
-import { ArrowRight, Dumbbell, Salad, TrendingUp, Leaf, Star, CheckCircle } from "lucide-react";
+import { ArrowRight, Sword, Salad, TrendingUp, Sparkles, Zap, Shield } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-cream overflow-x-hidden">
+    <div className="min-h-screen bg-void overflow-x-hidden">
+
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-md border-b border-navy/5">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="text-2xl font-bold text-navy">
-            Good<span className="text-coral">Mood</span>
-          </span>
-          <div className="flex items-center gap-4">
-            <Link href="/blog" className="text-sm font-medium text-navy/70 hover:text-navy transition-colors hidden sm:block">
-              Blog
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-orange/10 bg-void/90 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-orange rounded flex items-center justify-center">
+              <span className="text-void font-black text-xs">GM</span>
+            </div>
+            <span className="font-black uppercase tracking-tight text-white">Good<span className="text-orange">Mood</span></span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/blog" className="hidden sm:block text-xs font-black uppercase tracking-widest text-white/40 hover:text-orange transition-colors">
+              Parchemins
             </Link>
             <Link href="/auth">
-              <Button size="sm">Commencer</Button>
+              <Button size="sm">Rejoindre</Button>
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-navy via-navy-50 to-navy min-h-screen flex items-center pt-16">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 right-20 w-64 h-64 rounded-full bg-sage blur-3xl" />
-          <div className="absolute bottom-20 left-20 w-96 h-96 rounded-full bg-coral blur-3xl" />
-        </div>
-        <div className="relative max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
-          <div className="animate-fade-in">
-            <div className="inline-flex items-center gap-2 bg-white/10 text-sage-light text-sm font-medium px-4 py-2 rounded-full mb-6">
-              <Star size={14} className="fill-current" />
-              Wellness platform #1 en France
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-black text-white leading-tight mb-6">
-              Transforme ton
-              <span className="text-coral block">bien-être.</span>
-            </h1>
-            <p className="text-white/70 text-lg lg:text-xl leading-relaxed mb-10 max-w-lg">
-              Programmes sport et nutrition 100% personnalisés, suivi de progrès,
-              conseils skincare, supplements et bien plus. Tout commence ici.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/auth">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Démarrer gratuitement
-                  <ArrowRight className="ml-2" size={20} />
-                </Button>
-              </Link>
-              <Link href="/blog">
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto">
-                  Lire le blog
-                </Button>
-              </Link>
-            </div>
-          </div>
-          <div className="hidden lg:grid grid-cols-2 gap-4">
-            {[
-              { icon: Dumbbell, title: "Sport", desc: "Plans d'entraînement sur-mesure", color: "coral" },
-              { icon: Salad, title: "Nutrition", desc: "Macros et repas calculés pour toi", color: "sage" },
-              { icon: TrendingUp, title: "Progrès", desc: "Suis ton évolution avec des charts", color: "coral" },
-              { icon: Leaf, title: "Wellness", desc: "Skincare, sommeil & suppléments", color: "sage" },
-            ].map(({ icon: Icon, title, desc, color }) => (
-              <div
-                key={title}
-                className="bg-white/10 backdrop-blur-sm rounded-card p-6 border border-white/10 hover:bg-white/15 transition-all"
-              >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${color === "coral" ? "bg-coral/20" : "bg-sage/20"}`}>
-                  <Icon size={20} className={color === "coral" ? "text-coral" : "text-sage"} />
-                </div>
-                <h3 className="font-bold text-white mb-1">{title}</h3>
-                <p className="text-white/60 text-sm">{desc}</p>
+      {/* HERO */}
+      <section className="relative min-h-screen flex items-center pt-14 overflow-hidden">
+        {/* Background effects */}
+        <div className="absolute inset-0 bg-hero-pattern" />
+        <div className="absolute inset-0 manga-lines opacity-50" />
+        {/* Diagonal accent */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange/5 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/50 to-transparent" />
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="animate-slide_up">
+              {/* Rank badge */}
+              <div className="inline-flex items-center gap-2 border border-orange/30 bg-orange/5 text-orange text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded mb-6">
+                <Zap size={12} className="fill-current" />
+                Rang S — Wellness Platform
               </div>
-            ))}
+
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase leading-none mb-4 text-white">
+                Surpasse
+                <br />
+                <span className="text-gradient-orange">tes limites.</span>
+              </h1>
+
+              <p className="text-white/50 text-base sm:text-lg leading-relaxed mb-8 max-w-lg font-medium">
+                Programmes d&apos;entraînement ninja, nutrition de shinobi et développement du chakra.
+                Ton chemin vers le sommet commence ici.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/auth" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Commencer l&apos;entraînement
+                    <ArrowRight className="ml-2" size={18} />
+                  </Button>
+                </Link>
+                <Link href="/blog" className="w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                    Lire les parchemins
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Stats */}
+              <div className="flex gap-6 mt-10 pt-10 border-t border-orange/10">
+                {[
+                  { label: "Ninjas actifs", value: "12K+" },
+                  { label: "Missions complétées", value: "98K+" },
+                  { label: "Rang moyen", value: "Jonin" },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <div className="text-xl sm:text-2xl font-black text-orange">{s.value}</div>
+                    <div className="text-xs text-white/30 uppercase tracking-widest font-bold">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Feature cards grid */}
+            <div className="hidden lg:grid grid-cols-2 gap-3">
+              {[
+                { icon: Sword, title: "Missions Sport", desc: "Entraînement sur-mesure selon ton rang", color: "orange" },
+                { icon: Salad, title: "Rations Ninja", desc: "Nutrition calculée pour maximiser le chakra", color: "chakra" },
+                { icon: TrendingUp, title: "Progression", desc: "Monte en rang, visualise ton évolution", color: "red" },
+                { icon: Sparkles, title: "Chakra & Bien-être", desc: "Skincare, sommeil, suppléments de shinobi", color: "orange" },
+              ].map(({ icon: Icon, title, desc, color }) => (
+                <div key={title} className={`bg-shadow-light border rounded p-5 transition-all hover:border-orange/30 ${
+                  color === "orange" ? "border-orange/15" : color === "chakra" ? "border-chakra/15" : "border-red/15"
+                }`}>
+                  <div className={`w-9 h-9 rounded flex items-center justify-center mb-4 ${
+                    color === "orange" ? "bg-orange/20" : color === "chakra" ? "bg-chakra/20" : "bg-red/20"
+                  }`}>
+                    <Icon size={18} className={
+                      color === "orange" ? "text-orange" : color === "chakra" ? "text-chakra" : "text-red-light"
+                    } />
+                  </div>
+                  <h3 className="font-black uppercase text-xs tracking-wider text-white mb-1">{title}</h3>
+                  <p className="text-white/40 text-xs leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-24 px-6">
+      {/* FEATURES */}
+      <section className="py-20 sm:py-32 px-4 sm:px-6 relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/30 to-transparent" />
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-black text-navy mb-4">
-              Tout ce dont tu as besoin
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="text-xs font-black uppercase tracking-widest text-orange mb-3">Arsenal complet</div>
+            <h2 className="text-3xl sm:text-5xl font-black uppercase text-white">
+              Tout l&apos;équipement<br/>
+              <span className="text-gradient-orange">du ninja parfait</span>
             </h2>
-            <p className="text-navy/60 text-lg max-w-xl mx-auto">
-              Un écosystème complet pour transformer ta santé et ton bien-être au quotidien.
-            </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {features.map((f) => (
-              <div key={f.title} className="bg-white rounded-card p-8 shadow-card hover:shadow-card-hover transition-all group">
-                <div className="w-14 h-14 rounded-2xl bg-coral/10 flex items-center justify-center mb-6 group-hover:bg-coral/20 transition-colors">
-                  <f.icon size={28} className="text-coral" />
+              <div key={f.title} className="bg-shadow-light border border-orange/10 rounded p-6 sm:p-8 hover:border-orange/30 hover:bg-shadow transition-all group">
+                <div className="w-12 h-12 rounded bg-orange/10 border border-orange/20 flex items-center justify-center mb-5 group-hover:bg-orange/20 group-hover:border-orange/40 transition-all">
+                  <f.icon size={22} className="text-orange" />
                 </div>
-                <h3 className="text-xl font-bold text-navy mb-3">{f.title}</h3>
-                <p className="text-navy/60 leading-relaxed">{f.description}</p>
-                <ul className="mt-4 space-y-2">
+                <h3 className="text-sm font-black uppercase tracking-wider text-white mb-2">{f.title}</h3>
+                <p className="text-white/40 text-sm leading-relaxed mb-4">{f.description}</p>
+                <ul className="space-y-1.5">
                   {f.points.map((p) => (
-                    <li key={p} className="flex items-center gap-2 text-sm text-navy/70">
-                      <CheckCircle size={14} className="text-sage shrink-0" />
+                    <li key={p} className="flex items-center gap-2 text-xs text-white/50">
+                      <span className="w-1 h-1 rounded-full bg-orange shrink-0" />
                       {p}
                     </li>
                   ))}
@@ -112,30 +146,30 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-6 bg-navy relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-coral blur-3xl" />
-        </div>
+      <section className="py-20 sm:py-32 px-4 sm:px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-orange/5 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/40 to-transparent" />
         <div className="relative max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
-            Prêt(e) à changer ?
+          <Shield size={40} className="text-orange mx-auto mb-6 opacity-50" />
+          <h2 className="text-3xl sm:text-5xl font-black uppercase text-white mb-4">
+            Prêt à devenir<br />
+            <span className="text-gradient-orange">Hokage ?</span>
           </h2>
-          <p className="text-white/60 text-lg mb-10">
-            Rejoins des milliers d&apos;utilisateurs qui ont déjà transformé leur quotidien avec GoodMood.
+          <p className="text-white/40 mb-8 text-sm sm:text-base font-medium">
+            Rejoins des milliers de ninjas qui ont déjà transformé leur corps et leur esprit.
           </p>
           <Link href="/auth">
             <Button size="lg">
-              Créer mon compte gratuit
-              <ArrowRight className="ml-2" size={20} />
+              Commencer maintenant
+              <ArrowRight className="ml-2" size={18} />
             </Button>
           </Link>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-navy border-t border-white/10 py-8 px-6 text-center">
-        <p className="text-white/40 text-sm">
-          © 2024 GoodMood. Tous droits réservés.
+      <footer className="border-t border-orange/10 py-6 px-6 text-center">
+        <p className="text-white/20 text-xs font-bold uppercase tracking-widest">
+          © 2024 GoodMood — Ninja Wellness Platform
         </p>
       </footer>
     </div>
@@ -144,39 +178,39 @@ export default function LandingPage() {
 
 const features = [
   {
-    icon: Dumbbell,
-    title: "Programmes Sport",
-    description: "Des séances d'entraînement générées selon ton profil, ton équipement et tes objectifs.",
-    points: ["Planning semaine complet", "Vidéos & instructions", "Suivi des séances"],
+    icon: Sword,
+    title: "Missions Sport",
+    description: "Des séances générées selon ton rang, ton équipement et tes objectifs de shinobi.",
+    points: ["Planning semaine complet", "Instructions & techniques", "Suivi des missions"],
   },
   {
     icon: Salad,
-    title: "Plans Nutrition",
-    description: "Tes macros calculées au gramme près avec des plans repas adaptés à ton régime.",
-    points: ["Calories & macros précis", "Liste de courses auto", "Adapté à ton régime"],
+    title: "Rations du Clan",
+    description: "Macros calculés au gramme près avec des plans repas pour maximiser ton chakra.",
+    points: ["Calories & macros précis", "Liste de courses", "Adapté à ton régime"],
   },
   {
     icon: TrendingUp,
-    title: "Suivi des Progrès",
-    description: "Visualise tes évolutions avec des graphiques clairs et des check-ins hebdomadaires.",
-    points: ["Charts interactifs", "Poids & mesures", "Performances sportives"],
+    title: "Progression de Rang",
+    description: "Visualise ta montée en niveau avec des graphiques et check-ins hebdomadaires.",
+    points: ["Charts interactifs", "Poids & mesures", "Performances de combat"],
   },
   {
-    icon: Leaf,
-    title: "Conseils Wellness",
-    description: "Routines personnalisées, skincare adapté à ton âge, suppléments recommandés.",
-    points: ["Routine matin & soir", "Skincare par tranche d'âge", "Suppléments ciblés"],
+    icon: Sparkles,
+    title: "Développement du Chakra",
+    description: "Routines de shinobi, skincare selon ton âge, suppléments recommandés.",
+    points: ["Routine matin & soir", "Skincare ciblé", "Suppléments optimaux"],
   },
   {
-    icon: Star,
-    title: "Contenu Editorial",
-    description: "Articles experts en sport, nutrition, mindset et bien-être pour rester informé.",
-    points: ["Articles catégorisés", "Conseils d'experts", "Mis à jour régulièrement"],
+    icon: Zap,
+    title: "Parchemins",
+    description: "Articles experts en entraînement, nutrition, mindset et bien-être ninja.",
+    points: ["Articles catégorisés", "Conseils de Sensei", "Mise à jour régulière"],
   },
   {
-    icon: CheckCircle,
-    title: "Coaching Dédié",
-    description: "Pose tes questions à un coach et obtiens des réponses personnalisées.",
+    icon: Shield,
+    title: "Sensei Personnel",
+    description: "Pose tes questions à ton coach et obtiens des réponses personnalisées.",
     points: ["Messagerie directe", "Réponses rapides", "Suivi personnalisé"],
   },
 ];

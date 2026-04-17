@@ -28,72 +28,39 @@ export default function AuthForm() {
         password,
         options: { emailRedirectTo: `${location.origin}/auth/callback` },
       });
-      if (error) {
-        setError(error.message);
-      } else {
-        setMessage("Vérifie ton email pour confirmer ton compte !");
-      }
+      if (error) setError(error.message);
+      else setMessage("Vérifie ton email pour confirmer ton compte !");
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        setError("Email ou mot de passe incorrect.");
-      } else {
-        router.push("/dashboard");
-        router.refresh();
-      }
+      if (error) setError("Email ou mot de passe incorrect.");
+      else { router.push("/dashboard"); router.refresh(); }
     }
     setLoading(false);
   };
 
   return (
-    <div className="bg-white rounded-card p-8 shadow-card">
-      <div className="flex rounded-xl bg-cream p-1 mb-8">
-        <button
-          onClick={() => setMode("login")}
-          className={`flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all ${
-            mode === "login" ? "bg-white text-navy shadow-sm" : "text-navy/50 hover:text-navy"
-          }`}
-        >
-          Connexion
-        </button>
-        <button
-          onClick={() => setMode("signup")}
-          className={`flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all ${
-            mode === "signup" ? "bg-white text-navy shadow-sm" : "text-navy/50 hover:text-navy"
-          }`}
-        >
-          Inscription
-        </button>
+    <div className="bg-shadow border border-orange/20 rounded p-6 sm:p-8">
+      {/* Mode toggle */}
+      <div className="flex rounded bg-void border border-orange/10 p-1 mb-8">
+        {(["login", "signup"] as const).map((m) => (
+          <button key={m} onClick={() => setMode(m)}
+            className={`flex-1 py-2 text-xs font-black uppercase tracking-widest rounded transition-all ${
+              mode === m ? "bg-orange text-void" : "text-white/30 hover:text-white"
+            }`}>
+            {m === "login" ? "Connexion" : "Inscription"}
+          </button>
+        ))}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Email"
-          type="email"
-          placeholder="ton@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <Input
-          label="Mot de passe"
-          type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={8}
-        />
+        <Input label="Email" type="email" placeholder="ninja@clan.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <Input label="Mot de passe" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
 
-        {error && (
-          <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl">{error}</div>
-        )}
-        {message && (
-          <div className="bg-sage/10 text-sage-dark text-sm px-4 py-3 rounded-xl">{message}</div>
-        )}
+        {error && <div className="bg-red/10 border border-red/30 text-red-light text-xs font-bold uppercase tracking-wider px-4 py-3 rounded">{error}</div>}
+        {message && <div className="bg-orange/10 border border-orange/30 text-orange text-xs font-bold uppercase tracking-wider px-4 py-3 rounded">{message}</div>}
 
         <Button type="submit" loading={loading} className="w-full mt-2">
-          {mode === "login" ? "Se connecter" : "Créer mon compte"}
+          {mode === "login" ? "Entrer dans le clan" : "Rejoindre le clan"}
         </Button>
       </form>
     </div>
