@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight, Sword, Salad, TrendingUp, Sparkles, Zap, Shield } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Ryoku from "@/components/mascot/Ryoku";
+import Shuriken from "@/components/mascot/Shuriken";
+import NinjaSilhouette from "@/components/mascot/NinjaSilhouette";
 
 export default function LandingPage() {
   return (
@@ -29,34 +31,60 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* HERO */}
+      {/* HERO — sunset shonen */}
       <section className="relative min-h-screen flex items-center pt-14 overflow-hidden">
-        {/* BG effects */}
-        <div className="absolute inset-0 bg-hero-paper" />
-        <div className="absolute inset-0 speed-lines opacity-60" />
-        {/* Halftone bottom-right */}
-        <div className="absolute bottom-0 right-0 w-80 h-80 halftone opacity-30" />
-        {/* Panel border bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-navy" />
+        {/* Sunset sky */}
+        <div className="absolute inset-0 bg-sunset-soft" />
+        {/* Big sun disc rising from horizon */}
+        <div
+          className="absolute bottom-[-260px] left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full opacity-80 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, #F9C74F 0%, #F4A259 35%, rgba(232,113,156,0.35) 70%, transparent 100%)",
+            filter: "blur(2px)",
+          }}
+        />
+        {/* Radiating sun rays */}
+        <div className="absolute inset-0 sun-rays opacity-40 pointer-events-none" />
+        {/* Speed lines overlay */}
+        <div className="absolute inset-0 speed-lines opacity-30" />
+        {/* Horizon line */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-navy" />
+        {/* Ninja silhouettes on horizon */}
+        <div className="absolute bottom-0 left-8 sm:left-20 opacity-90 pointer-events-none hidden md:block">
+          <NinjaSilhouette pose="crouch" size={200} fill="#0D1B2A" />
+        </div>
+        {/* Spinning shurikens */}
+        <div className="absolute top-24 right-10 opacity-80">
+          <Shuriken size={56} />
+        </div>
+        <div className="absolute top-48 right-40 opacity-50 hidden lg:block">
+          <Shuriken size={36} color="#9B5DE5" />
+        </div>
+        <div className="absolute bottom-40 left-[45%] opacity-30 hidden lg:block">
+          <Shuriken size={28} color="#0D1B2A" />
+        </div>
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-slide-up">
               {/* Impact tag */}
-              <div className="inline-flex items-center gap-2 bg-coral border-2 border-navy rounded-xl px-3 py-1.5 shadow-[3px_3px_0px_#0D1B2A] mb-6">
-                <Zap size={12} className="text-white fill-current" />
-                <span className="text-white text-xs font-black uppercase tracking-widest">Rang S — Wellness Platform</span>
+              <div className="inline-flex items-center gap-2 bg-navy border-2 border-navy rounded-xl px-3 py-1.5 shadow-[3px_3px_0px_#F9C74F] mb-6">
+                <Zap size={12} className="text-sunset-gold fill-current" />
+                <span className="text-white text-xs font-black uppercase tracking-widest">
+                  Rang S · Sunset Edition
+                </span>
               </div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase leading-none mb-4 text-navy">
                 Surpasse
                 <br />
-                <span className="text-coral">tes limites.</span>
+                <span className="rank-shimmer">tes limites.</span>
               </h1>
 
-              <p className="text-navy/60 text-base sm:text-lg leading-relaxed mb-8 max-w-lg font-medium">
-                Programmes sport sur-mesure, nutrition calculée et développement bien-être.
-                Ton aventure vers la meilleure version de toi commence ici.
+              <p className="text-navy/70 text-base sm:text-lg leading-relaxed mb-8 max-w-lg font-medium">
+                Programmes sport sur-mesure, nutrition calculée et gamification à la sauce shonen.
+                Accomplis tes missions, gagne des XP et gravis les rangs ninja vers la meilleure version de toi.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-10">
@@ -76,13 +104,15 @@ export default function LandingPage() {
               {/* Stats — manga panel style */}
               <div className="flex gap-6 pt-6 border-t-2 border-navy/10">
                 {[
-                  { label: "Membres actifs", value: "12K+" },
-                  { label: "Sessions complétées", value: "98K+" },
-                  { label: "Rang moyen", value: "Jonin" },
+                  { label: "Missions quotidiennes", value: "4" },
+                  { label: "Rangs à gravir", value: "6" },
+                  { label: "Série max", value: "∞" },
                 ].map((s) => (
                   <div key={s.label}>
                     <div className="text-2xl font-black text-coral">{s.value}</div>
-                    <div className="text-xs text-navy/40 uppercase tracking-widest font-black">{s.label}</div>
+                    <div className="text-[10px] text-navy/50 uppercase tracking-widest font-black">
+                      {s.label}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -93,17 +123,34 @@ export default function LandingPage() {
               {/* Mascot Ryoku — hero pose */}
               <div className="relative">
                 {/* Impact text */}
-                <div className="absolute -top-6 -left-8 onomatopoeia text-4xl rotate-[-8deg] z-10">PUSH!</div>
-                <div className="absolute -bottom-2 -right-6 onomatopoeia text-2xl rotate-[5deg] z-10">LET&apos;S GO!</div>
-                {/* Speed lines ring */}
-                <div className="absolute inset-0 speed-lines opacity-80 rounded-full scale-150" />
+                <div className="absolute -top-6 -left-8 onomatopoeia text-4xl rotate-[-8deg] z-10">
+                  PUSH!
+                </div>
+                <div className="absolute -bottom-2 -right-6 onomatopoeia text-2xl rotate-[5deg] z-10">
+                  LET&apos;S GO!
+                </div>
+                {/* Glowing sun behind mascot */}
+                <div
+                  className="absolute inset-0 -m-16 rounded-full opacity-60 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(249,199,79,0.6), rgba(244,138,138,0.3) 50%, transparent 75%)",
+                  }}
+                />
                 <Ryoku pose="running" size={280} className="relative z-10 drop-shadow-lg" />
               </div>
 
               {/* Mini feature tags */}
               <div className="flex flex-wrap gap-2 justify-center">
-                {["Sport sur-mesure", "Nutrition calculée", "Progression de rang", "Bien-être & Chakra"].map((tag) => (
-                  <span key={tag} className="manga-tag">{tag}</span>
+                {[
+                  "XP & Rangs ninja",
+                  "Quêtes quotidiennes",
+                  "Série enflammée",
+                  "Hydratation",
+                ].map((tag) => (
+                  <span key={tag} className="manga-tag">
+                    {tag}
+                  </span>
                 ))}
               </div>
             </div>
