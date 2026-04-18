@@ -12,7 +12,6 @@ import {
   BookOpen,
   Users,
   Activity,
-  Quote,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 
@@ -28,9 +27,6 @@ export default function LandingPage() {
           <div className="flex items-center gap-6">
             <Link href="#features" className="text-sm font-medium text-navy/70 hover:text-navy transition-colors hidden md:block">
               Fonctionnalités
-            </Link>
-            <Link href="#testimonials" className="text-sm font-medium text-navy/70 hover:text-navy transition-colors hidden md:block">
-              Avis
             </Link>
             <Link href="/blog" className="text-sm font-medium text-navy/70 hover:text-navy transition-colors hidden sm:block">
               Blog
@@ -238,40 +234,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section id="testimonials" className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="inline-block text-coral text-sm font-semibold uppercase tracking-wider mb-3">
-              Ils nous font confiance
-            </span>
-            <h2 className="text-4xl lg:text-5xl font-black text-navy mb-4">
-              Des résultats qui parlent
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <div key={t.name} className="bg-white rounded-card p-8 shadow-card-soft border border-navy/5 relative">
-                <Quote size={28} className="text-coral/30 mb-4" />
-                <p className="text-navy/80 leading-relaxed mb-6">{t.text}</p>
-                <div className="flex items-center gap-3">
-                  <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${t.avatar}`} />
-                  <div>
-                    <div className="font-bold text-navy text-sm">{t.name}</div>
-                    <div className="text-xs text-navy/50">{t.role}</div>
-                  </div>
-                </div>
-                <div className="absolute top-6 right-6 flex gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={12} className="fill-coral text-coral" />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="py-24 px-6 bg-navy relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -399,26 +361,5 @@ const features = [
     iconBg: "bg-navy/10",
     iconColor: "text-navy",
     accent: "bg-navy/20",
-  },
-];
-
-const testimonials = [
-  {
-    name: "Clara M.",
-    role: "Membre depuis 6 mois",
-    text: "J'ai perdu 8 kg en suivant les plans nutrition et sport. L'app s'adapte à mon rythme, c'est vraiment personnalisé.",
-    avatar: "from-coral to-coral-dark",
-  },
-  {
-    name: "Thomas L.",
-    role: "Athlète amateur",
-    text: "Les programmes sport sont solides, bien structurés. J'adore le suivi des perfs et les conseils wellness en bonus.",
-    avatar: "from-sage to-sage-dark",
-  },
-  {
-    name: "Sophie D.",
-    role: "Maman active",
-    text: "Les routines wellness m'ont permis de mieux gérer mon stress et mon sommeil. Simple, efficace, et belle interface.",
-    avatar: "from-navy-50 to-navy",
   },
 ];
