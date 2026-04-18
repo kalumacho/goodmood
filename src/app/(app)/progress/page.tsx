@@ -2,6 +2,8 @@ export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ProgressView from "./ProgressView";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { TrendingUp } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Mes Progrès" };
@@ -24,11 +26,13 @@ export default async function ProgressPage() {
     .order("date", { ascending: true });
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-navy">Mes Progrès 📈</h1>
-        <p className="text-navy/60 mt-1">Suis ton évolution semaine après semaine.</p>
-      </div>
+    <div className="animate-fade-in">
+      <PageHeader
+        title="Mes Progrès"
+        subtitle="Suis ton évolution semaine après semaine."
+        icon={TrendingUp}
+        accent="navy"
+      />
       <ProgressView
         userId={user.id}
         logs={logs || []}

@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { generateWeeklyPlan } from "@/lib/workout-generator";
 import WorkoutWeek from "./WorkoutWeek";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Dumbbell } from "lucide-react";
 import type { Metadata } from "next";
 import type { UserProfile } from "@/types/database";
 
@@ -34,13 +36,13 @@ export default async function SportPage() {
   ) || [];
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-navy">Programme Sport 💪</h1>
-        <p className="text-navy/60 mt-1">
-          Plan personnalisé · {profile.equipment === "full_gym" ? "Salle de sport" : "Sans équipement"}
-        </p>
-      </div>
+    <div className="animate-fade-in">
+      <PageHeader
+        title="Programme Sport"
+        subtitle={`Plan personnalisé · ${profile.equipment === "full_gym" ? "Salle de sport" : "Sans équipement"}`}
+        icon={Dumbbell}
+        accent="coral"
+      />
       <WorkoutWeek plan={weekPlan} userId={user.id} completedDays={completedDays} />
     </div>
   );

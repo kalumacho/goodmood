@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   LogOut,
+  Sparkles,
 } from "lucide-react";
 
 const navLinks = [
@@ -28,7 +29,11 @@ const navLinks = [
   { href: "/messages", label: "Messages", icon: MessageCircle },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  userEmail?: string | null;
+}
+
+export default function Navbar({ userEmail }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -40,53 +45,84 @@ export default function Navbar() {
     router.refresh();
   };
 
+  const initial = userEmail ? userEmail.charAt(0).toUpperCase() : "?";
+  const displayName = userEmail ? userEmail.split("@")[0] : "Invité";
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/");
+
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 bg-navy min-h-screen fixed left-0 top-0 z-30 p-6">
-        <Link href="/dashboard" className="mb-10">
+      <aside className="hidden lg:flex flex-col w-64 bg-navy min-h-screen fixed left-0 top-0 z-30 p-6 border-r border-white/5">
+        <Link href="/dashboard" className="mb-8 flex items-center gap-2 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-coral flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(232,114,74,0.55)] group-hover:scale-105 transition-transform">
+            <Sparkles size={18} className="text-white" />
+          </div>
           <span className="text-2xl font-bold text-white tracking-tight">
             Good<span className="text-coral">Mood</span>
           </span>
         </Link>
 
         <nav className="flex-1 flex flex-col gap-1">
-          {navLinks.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
-                pathname === href || pathname.startsWith(href + "/")
-                  ? "bg-coral text-white"
-                  : "text-white/60 hover:text-white hover:bg-white/10"
-              )}
-            >
-              <Icon size={18} />
-              {label}
-            </Link>
-          ))}
+          {navLinks.map(({ href, label, icon: Icon }) => {
+            const active = isActive(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  "relative flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all",
+                  active
+                    ? "bg-coral text-white shadow-[0_6px_20px_-4px_rgba(232,114,74,0.5)]"
+                    : "text-white/60 hover:text-white hover:bg-white/5"
+                )}
+              >
+                {active && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[calc(1.5rem+1px)] w-1 h-6 rounded-r-full bg-coral" />
+                )}
+                <Icon size={18} />
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 text-white/50 hover:text-white hover:bg-white/10 rounded-xl text-sm transition-all mt-auto"
-        >
-          <LogOut size={18} />
-          Déconnexion
-        </button>
+        {/* User footer */}
+        <div className="mt-auto pt-4 border-t border-white/5">
+          <div className="flex items-center gap-3 px-2 py-2">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-coral to-coral-dark text-white font-bold flex items-center justify-center text-sm shrink-0">
+              {initial}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-white text-sm font-semibold truncate capitalize">{displayName}</div>
+              <div className="text-white/40 text-xs truncate">{userEmail || ""}</div>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-white/50 hover:text-white hover:bg-white/5 rounded-xl text-sm transition-all mt-2"
+          >
+            <LogOut size={16} />
+            Déconnexion
+          </button>
+        </div>
       </aside>
 
       {/* Mobile header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-navy px-4 py-4 flex items-center justify-between">
-        <Link href="/dashboard">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-navy/95 backdrop-blur px-4 py-3 flex items-center justify-between border-b border-white/5">
+        <Link href="/dashboard" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-coral flex items-center justify-center">
+            <Sparkles size={16} className="text-white" />
+          </div>
           <span className="text-xl font-bold text-white">
             Good<span className="text-coral">Mood</span>
           </span>
         </Link>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-white p-2"
+          className="text-white p-2 hover:bg-white/5 rounded-lg transition-colors"
+          aria-label="Menu"
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -94,31 +130,45 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-20 bg-navy pt-16">
+        <div className="lg:hidden fixed inset-0 z-20 bg-navy pt-16 animate-fade-in">
           <nav className="flex flex-col gap-1 p-4">
-            {navLinks.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  "flex items-center gap-3 px-4 py-4 rounded-xl text-base font-medium transition-all",
-                  pathname === href
-                    ? "bg-coral text-white"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
-                )}
+            {navLinks.map(({ href, label, icon: Icon }) => {
+              const active = isActive(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-4 rounded-xl text-base font-medium transition-all",
+                    active
+                      ? "bg-coral text-white"
+                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  )}
+                >
+                  <Icon size={20} />
+                  {label}
+                </Link>
+              );
+            })}
+            <div className="mt-4 pt-4 border-t border-white/10">
+              <div className="flex items-center gap-3 px-4 py-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral to-coral-dark text-white font-bold flex items-center justify-center">
+                  {initial}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-white text-sm font-semibold truncate">{displayName}</div>
+                  <div className="text-white/40 text-xs truncate">{userEmail || ""}</div>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-4 text-white/50 hover:text-white rounded-xl text-base"
               >
-                <Icon size={20} />
-                {label}
-              </Link>
-            ))}
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 px-4 py-4 text-white/50 hover:text-white rounded-xl text-base mt-4"
-            >
-              <LogOut size={20} />
-              Déconnexion
-            </button>
+                <LogOut size={20} />
+                Déconnexion
+              </button>
+            </div>
           </nav>
         </div>
       )}

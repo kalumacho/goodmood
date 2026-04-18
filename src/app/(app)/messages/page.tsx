@@ -2,6 +2,8 @@ export const dynamic = "force-dynamic";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import MessagesView from "./MessagesView";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { MessageCircle } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Messages" };
@@ -18,11 +20,13 @@ export default async function MessagesPage() {
     .order("sent_at", { ascending: true });
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-navy">Mon Coach 💬</h1>
-        <p className="text-navy/60 mt-1">Pose tes questions, ton coach te répond sous 24h.</p>
-      </div>
+    <div className="animate-fade-in">
+      <PageHeader
+        title="Mon Coach"
+        subtitle="Pose tes questions, ton coach te répond sous 24h."
+        icon={MessageCircle}
+        accent="coral"
+      />
       <MessagesView userId={user.id} initialMessages={messages || []} />
     </div>
   );

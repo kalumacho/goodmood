@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
-import { Sun, Moon, Pill, Wind, Heart } from "lucide-react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Sun, Moon, Pill, Wind, Heart, Leaf } from "lucide-react";
 import type { UserProfile } from "@/types/database";
 
 export const metadata: Metadata = { title: "Wellness" };
@@ -62,11 +63,13 @@ export default async function WellnessPage() {
   const supplements = getSupplements(profile.goal, profile.activity_level);
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-navy">Wellness 🌿</h1>
-        <p className="text-navy/60 mt-1">Routines, skincare et suppléments personnalisés pour toi.</p>
-      </div>
+    <div className="animate-fade-in">
+      <PageHeader
+        title="Wellness"
+        subtitle="Routines, skincare et suppléments personnalisés pour toi."
+        icon={Leaf}
+        accent="sage"
+      />
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Morning routine */}
