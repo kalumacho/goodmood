@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { calculateBMR, calculateTDEE, calculateMacros } from "@/lib/utils";
 import { generateNutritionPlan } from "@/lib/nutrition-generator";
 import NutritionView from "./NutritionView";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Salad } from "lucide-react";
 import type { Metadata } from "next";
 import type { UserProfile } from "@/types/database";
 
@@ -29,13 +31,13 @@ export default async function NutritionPage() {
   const weekPlan = generateNutritionPlan(profile.diet, macros.calories);
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-navy">Plan Nutrition 🥗</h1>
-        <p className="text-navy/60 mt-1">
-          {macros.calories} kcal · {macros.protein}g protéines · {macros.carbs}g glucides · {macros.fats}g lipides
-        </p>
-      </div>
+    <div className="animate-fade-in">
+      <PageHeader
+        title="Plan Nutrition"
+        subtitle={`${macros.calories} kcal · ${macros.protein}g protéines · ${macros.carbs}g glucides · ${macros.fats}g lipides`}
+        icon={Salad}
+        accent="sage"
+      />
       <NutritionView plan={weekPlan} />
     </div>
   );

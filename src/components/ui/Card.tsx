@@ -3,14 +3,22 @@ import { HTMLAttributes } from "react";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean;
+  variant?: "default" | "bordered" | "flat" | "dark";
 }
 
-export function Card({ className, hover = false, ...props }: CardProps) {
+export function Card({ className, hover = false, variant = "default", ...props }: CardProps) {
+  const variants = {
+    default: "bg-white shadow-card",
+    bordered: "bg-white border border-navy/8",
+    flat: "bg-cream",
+    dark: "bg-navy text-white shadow-card",
+  };
   return (
     <div
       className={cn(
-        "bg-white rounded-card shadow-card p-6",
-        hover && "transition-all duration-200 hover:shadow-card-hover hover:-translate-y-1 cursor-pointer",
+        "rounded-card p-6 transition-all duration-200",
+        variants[variant],
+        hover && "hover:shadow-card-hover hover:-translate-y-1 cursor-pointer group",
         className
       )}
       {...props}
