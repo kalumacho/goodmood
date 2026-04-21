@@ -26,12 +26,12 @@ export default function AuthForm() {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: `${location.origin}/auth/callback` },
       });
       if (error) {
         setError(error.message);
       } else {
-        setMessage("Vérifie ton email pour confirmer ton compte !");
+        router.push("/dashboard");
+        router.refresh();
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
