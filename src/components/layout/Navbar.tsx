@@ -17,6 +17,7 @@ import {
   X,
   LogOut,
   Sparkles,
+  Star,
 } from "lucide-react";
 
 const navLinks = [
@@ -31,9 +32,11 @@ const navLinks = [
 
 interface NavbarProps {
   userEmail?: string | null;
+  level?: number;
+  levelTitle?: string;
 }
 
-export default function Navbar({ userEmail }: NavbarProps) {
+export default function Navbar({ userEmail, level = 1, levelTitle = "Débutant" }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -96,7 +99,12 @@ export default function Navbar({ userEmail }: NavbarProps) {
             </div>
             <div className="min-w-0 flex-1">
               <div className="text-white text-sm font-semibold truncate capitalize">{displayName}</div>
-              <div className="text-white/40 text-xs truncate">{userEmail || ""}</div>
+              <div className="flex items-center gap-1 mt-0.5">
+                <Star size={10} className="text-coral shrink-0" />
+                <span className="text-coral text-xs font-semibold">Niv. {level}</span>
+                <span className="text-white/30 text-xs">·</span>
+                <span className="text-white/40 text-xs truncate">{levelTitle}</span>
+              </div>
             </div>
           </div>
           <button

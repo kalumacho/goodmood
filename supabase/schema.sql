@@ -128,6 +128,41 @@ create policy "Users manage own messages" on public.messages
 create policy "Articles are public" on public.articles
   for select using (true);
 
+-- Gamification: XP tracking
+create table if not exists public.user_xp (
+  user_id uuid references auth.users(id) on delete cascade primary key,
+  total_xp integer not null default 0,
+  updated_at timestamptz default now()
+);
+
+create table if not exists public.xp_events (
+  id uuid default uuid_generate_v4() primary key,
+  user_id uuid references auth.users(id) on delete cascade not null,
+  event_type text not null,
+  amount integer not null,
+  created_at timestamptz default now() not null
+);
+
+create table if not exists public.user_badges (
+  user_id uuid references auth.users(id) on delete cascade not null,
+  badge_id text not null,
+  earned_at timestamptz default now() not null,
+  primary key (user_id, badge_id)
+);
+
+alter table public.user_xp enable row level security;
+alter table public.xp_events enable row level security;
+alter table public.user_badges enable row level security;
+
+create policy "Users manage own xp" on public.user_xp
+  for all using (auth.uid() = user_id);
+
+create policy "Users manage own xp events" on public.xp_events
+  for all using (auth.uid() = user_id);
+
+create policy "Users manage own badges" on public.user_badges
+  for all using (auth.uid() = user_id);
+
 -- Sample articles
 insert into public.articles (title, slug, category, content, excerpt, published_at) values
 (

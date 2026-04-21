@@ -20,11 +20,22 @@ import {
   MessageCircle,
   CheckCircle2,
   Sparkles,
+  Star,
+  Award,
+  Trophy,
+  Shield,
 } from "lucide-react";
 import type { Metadata } from "next";
 import type { UserProfile } from "@/types/database";
 import GoalsEditor from "./GoalsEditor";
 import HydrationTracker from "./HydrationTracker";
+import {
+  getLevelProgress,
+  BADGES,
+  checkAndAwardBadge,
+  awardXP,
+  XP_EVENTS,
+} from "@/lib/gamification";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -34,6 +45,15 @@ function greeting(hour: number): { hello: string; emoji: string } {
   if (hour < 18) return { hello: "Bon après-midi", emoji: "👋" };
   return { hello: "Bonsoir", emoji: "🌆" };
 }
+
+const BADGE_ICONS: Record<string, React.ElementType> = {
+  first_session: Dumbbell,
+  sessions_10: Award,
+  sessions_50: Trophy,
+  streak_3: Flame,
+  streak_7: Zap,
+  first_progress: TrendingUp,
+};
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -64,16 +84,18 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .gte("completed_at", sevenDaysAgo);
 
-  const completedToday =
-    completedWeek?.filter((s) => s.completed_at.startsWith(todayISO)) || [];
+  const { data: allCompleted } = await supabase
+    .from("completed_sessions")
+    .select("id")
+    .eq("user_id", user.id);
 
+  const completedToday = completedWeek?.filter((s) => s.completed_at.startsWith(todayISO)) || [];
   const sessionsPerWeek = (profile as any).sessions_per_week || 3;
   const completedThisWeek = completedWeek?.length || 0;
+  const totalSessions = allCompleted?.length || 0;
   const weekProgress = Math.min(1, completedThisWeek / sessionsPerWeek);
 
-  const doneDays = new Set(
-    (completedWeek || []).map((s) => s.completed_at.split("T")[0])
-  );
+  const doneDays = new Set((completedWeek || []).map((s) => s.completed_at.split("T")[0]));
   const last7 = Array.from({ length: 7 }).map((_, i) => {
     const d = new Date(now);
     d.setDate(d.getDate() - (6 - i));
@@ -85,13 +107,44 @@ export default async function DashboardPage() {
     };
   });
 
-  // Streak = consecutive past days (including today) with a completed session
   let streak = 0;
   for (let i = last7.length - 1; i >= 0; i--) {
     if (last7[i].done) streak++;
     else if (last7[i].isToday) continue;
     else break;
   }
+
+  // XP & gamification
+  await awardXP(supabase, user.id, "daily_login", XP_EVENTS.daily_login);
+
+  if (totalSessions >= 1) await checkAndAwardBadge(supabase, user.id, "first_session");
+  if (totalSessions >= 10) await checkAndAwardBadge(supabase, user.id, "sessions_10");
+  if (totalSessions >= 50) await checkAndAwardBadge(supabase, user.id, "sessions_50");
+  if (streak >= 3) await checkAndAwardBadge(supabase, user.id, "streak_3");
+  if (streak >= 7) await checkAndAwardBadge(supabase, user.id, "streak_7");
+
+  const { data: progressLogs } = await supabase
+    .from("progress_logs")
+    .select("id")
+    .eq("user_id", user.id)
+    .limit(1);
+  if (progressLogs && progressLogs.length > 0) {
+    await checkAndAwardBadge(supabase, user.id, "first_progress");
+  }
+
+  const { data: xpData } = await supabase
+    .from("user_xp")
+    .select("total_xp")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  const totalXP = xpData?.total_xp ?? 0;
+  const levelInfo = getLevelProgress(totalXP);
+
+  const { data: earnedBadgesData } = await supabase
+    .from("user_badges")
+    .select("badge_id")
+    .eq("user_id", user.id);
+  const earnedBadgeIds = (earnedBadgesData || []).map((b) => b.badge_id);
 
   const goalLabels: Record<string, string> = {
     weight_loss: "Perte de poids",
@@ -152,11 +205,37 @@ export default async function DashboardPage() {
             </div>
           ))}
         </div>
+
+        {/* XP Bar */}
+        <div className="relative mt-4 bg-white/10 rounded-2xl p-4">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-2">
+              <span className="bg-coral text-white text-xs font-black px-2.5 py-1 rounded-lg flex items-center gap-1">
+                <Star size={10} /> Niv. {levelInfo.current.level}
+              </span>
+              <span className="text-white/80 text-sm font-semibold">{levelInfo.current.title}</span>
+            </div>
+            <span className="text-white/60 text-xs font-medium">{totalXP} XP</span>
+          </div>
+          <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-coral to-coral-dark rounded-full transition-all duration-700"
+              style={{ width: `${levelInfo.progress * 100}%` }}
+            />
+          </div>
+          {levelInfo.next && (
+            <p className="text-white/40 text-xs mt-1.5">
+              {levelInfo.xpToNext} XP pour Niv. {levelInfo.next.level} — {levelInfo.next.title}
+            </p>
+          )}
+          {!levelInfo.next && (
+            <p className="text-coral-light text-xs mt-1.5 font-semibold">Niveau maximum atteint !</p>
+          )}
+        </div>
       </div>
 
       {/* Top stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-        {/* Weekly progress ring */}
         <Card className="flex items-center gap-5">
           <ProgressRing value={completedThisWeek} max={sessionsPerWeek} size={96} stroke={8} color="coral">
             <div className="text-2xl font-black text-navy leading-none">{completedThisWeek}</div>
@@ -181,7 +260,6 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        {/* Streak */}
         <Card className="flex items-center gap-5">
           <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-coral to-coral-dark flex items-center justify-center shrink-0 shadow-[0_10px_30px_-10px_rgba(232,114,74,0.7)]">
             <Flame size={36} className="text-white" />
@@ -199,7 +277,6 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        {/* Hydration */}
         <HydrationTracker />
       </div>
 
@@ -216,6 +293,49 @@ export default async function DashboardPage() {
           <MacroCard icon={Zap} label="Protéines" value={macros.protein} unit="g" color="sage" />
           <MacroCard icon={Wheat} label="Glucides" value={macros.carbs} unit="g" color="navy" />
           <MacroCard icon={Droplet} label="Lipides" value={macros.fats} unit="g" color="coral" />
+        </div>
+      </section>
+
+      {/* Badges */}
+      <section>
+        <div className="flex items-baseline justify-between mb-3">
+          <h2 className="text-lg font-bold text-navy">Mes badges</h2>
+          <span className="text-xs text-navy/40">{earnedBadgeIds.length}/{BADGES.length} débloqués</span>
+        </div>
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+          {BADGES.map((badge) => {
+            const earned = earnedBadgeIds.includes(badge.id);
+            const Icon = BADGE_ICONS[badge.id] ?? Shield;
+            return (
+              <div
+                key={badge.id}
+                className={`flex flex-col items-center gap-2 p-3 rounded-2xl border text-center transition-all ${
+                  earned
+                    ? "bg-white border-navy/10 shadow-card-soft"
+                    : "bg-navy/[0.03] border-transparent"
+                }`}
+              >
+                <div
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all ${
+                    earned ? "bg-coral/10 text-coral" : "bg-navy/5 text-navy/20"
+                  }`}
+                >
+                  <Icon size={20} />
+                </div>
+                <div>
+                  <p className={`text-xs font-bold leading-tight ${earned ? "text-navy" : "text-navy/30"}`}>
+                    {badge.label}
+                  </p>
+                  <p className={`text-[10px] mt-0.5 ${earned ? "text-navy/40" : "text-navy/20"}`}>
+                    {badge.desc}
+                  </p>
+                  {earned && (
+                    <p className="text-[10px] text-coral font-semibold mt-1">+{badge.xpReward} XP</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 

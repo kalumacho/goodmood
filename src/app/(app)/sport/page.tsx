@@ -30,6 +30,11 @@ export default async function SportPage() {
     .eq("user_id", user.id)
     .gte("completed_at", new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
 
+  const { data: allSessions } = await supabase
+    .from("completed_sessions")
+    .select("id")
+    .eq("user_id", user.id);
+
   const weekPlan = generateWeeklyPlan(profile);
   const completedDays = completedSessions?.map((s) =>
     new Date(s.completed_at).toLocaleDateString("fr-FR", { weekday: "long" })
@@ -43,7 +48,12 @@ export default async function SportPage() {
         icon={Dumbbell}
         accent="coral"
       />
-      <WorkoutWeek plan={weekPlan} userId={user.id} completedDays={completedDays} />
+      <WorkoutWeek
+        plan={weekPlan}
+        userId={user.id}
+        completedDays={completedDays}
+        totalSessionsAll={allSessions?.length ?? 0}
+      />
     </div>
   );
 }

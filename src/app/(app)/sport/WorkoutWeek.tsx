@@ -4,7 +4,8 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Card } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
-import { Check, ChevronDown, ChevronUp, Moon } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Moon, Info } from "lucide-react";
+import { awardXP, checkAndAwardBadge, XP_EVENTS } from "@/lib/gamification";
 
 type Exercise = {
   name: string;
@@ -25,10 +26,12 @@ export default function WorkoutWeek({
   plan,
   userId,
   completedDays,
+  totalSessionsAll,
 }: {
   plan: DaySession[];
   userId: string;
   completedDays: string[];
+  totalSessionsAll: number;
 }) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [done, setDone] = useState<Set<string>>(() => new Set(completedDays.map((d) => d.toLowerCase())));
@@ -58,6 +61,15 @@ export default function WorkoutWeek({
       });
       if (!error) {
         setDone((prev) => { const next = new Set(Array.from(prev)); next.add(dayLower); return next; });
+
+        // Award XP for session completion (once per day)
+        await awardXP(supabase, userId, "session_complete", XP_EVENTS.session_complete);
+
+        // Check session-based badges
+        const newTotal = totalSessionsAll + done.size + 1;
+        if (newTotal >= 1) await checkAndAwardBadge(supabase, userId, "first_session");
+        if (newTotal >= 10) await checkAndAwardBadge(supabase, userId, "sessions_10");
+        if (newTotal >= 50) await checkAndAwardBadge(supabase, userId, "sessions_50");
       }
     }
     setLoading(null);
@@ -86,10 +98,14 @@ export default function WorkoutWeek({
                 {isDone ? <Check size={20} /> : session.day.slice(0, 3)}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className={`font-bold ${isToday ? "text-coral" : "text-navy"}`}>{session.day}</span>
                   {isToday && <span className="text-xs bg-coral text-white px-2 py-0.5 rounded-full">Aujourd&apos;hui</span>}
-                  {isDone && <span className="text-xs bg-sage/20 text-sage-dark px-2 py-0.5 rounded-full">✅ Complété</span>}
+                  {isDone && (
+                    <span className="text-xs bg-sage/20 text-sage-dark px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <Check size={10} /> Complété
+                    </span>
+                  )}
                 </div>
                 <p className="text-navy/50 text-sm">{session.isRest ? "Repos" : `${session.title} · ${session.exercises.length} exercices`}</p>
               </div>
@@ -111,7 +127,10 @@ export default function WorkoutWeek({
                       <span><strong className="text-navy">{ex.sets}</strong> séries</span>
                       <span><strong className="text-navy">{ex.reps}</strong> reps</span>
                     </div>
-                    <p className="text-xs text-navy/50 italic">💡 {ex.instructions}</p>
+                    <div className="flex items-start gap-2 mt-2">
+                      <Info size={13} className="text-navy/30 mt-0.5 shrink-0" />
+                      <p className="text-xs text-navy/50 italic">{ex.instructions}</p>
+                    </div>
                   </div>
                 ))}
 
@@ -122,7 +141,7 @@ export default function WorkoutWeek({
                   className="w-full mt-2"
                 >
                   <Check size={16} className="mr-2" />
-                  {isDone ? "Annuler la complétion" : "Marquer comme complétée"}
+                  {isDone ? "Annuler la complétion" : "Marquer comme complétée · +50 XP"}
                 </Button>
               </div>
             )}
